@@ -33,7 +33,7 @@
       padding: 12px;
     }
 
-    /* 1. 頂部匯率設定區 (緊湊版) */
+    /* 1. 頂部匯率設定區 */
     .rate-setting {
       background: #1c1c1e;
       border-radius: 12px;
@@ -63,7 +63,7 @@
       font-weight: bold;
     }
 
-    /* 2. 顯示區域 (限制高度、防止撐大) */
+    /* 2. 金額顯示區域 */
     .display-area {
       flex: 1;
       display: flex;
@@ -71,7 +71,7 @@
       justify-content: center;
       padding: 8px 4px;
       gap: 10px;
-      min-height: 0; /* 防止子元素撐開容器 */
+      min-height: 0;
     }
     .currency-row {
       display: flex;
@@ -99,9 +99,8 @@
     .currency-tag.base {
       color: #aaa;
     }
-    /* 動態縮放與不換行 */
     .currency-amount {
-      font-size: clamp(24px, 8vw, 48px); /* 自動依文字長度動態調整大小 */
+      font-size: clamp(24px, 8vw, 48px);
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
@@ -116,13 +115,13 @@
       color: #777;
     }
 
-    /* 3. 按鈕區域 (自適應高度，絕不移出螢幕) */
+    /* 3. 按鈕區域 (數字與符號極大化) */
     .keypad {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(4, 1fr);
       gap: 10px;
-      height: 58%; /* 固定按鈕區域佔總高度的百分比 */
+      height: 60%;
       flex-shrink: 0;
       padding-bottom: 4px;
     }
@@ -130,8 +129,8 @@
       width: 100%;
       height: 100%;
       border: none;
-      border-radius: 16px;
-      font-size: 32px;
+      border-radius: 18px;
+      font-size: clamp(32px, 5vh, 44px); /* 大幅放大按鈕文字，隨畫面高度彈性調適 */
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -150,7 +149,7 @@
     .btn-orange {
       background-color: #ff9f0a;
       color: #ffffff;
-      font-size: 38px;
+      font-size: clamp(36px, 6vh, 52px); /* 運算符號特別再加大 */
     }
   </style>
 </head>
@@ -185,27 +184,27 @@
     </div>
   </div>
 
-  <!-- 3. 按鈕區域 (4x4 佈局) -->
+  <!-- 3. 按鈕區域 (右側符號順序：÷ × - +) -->
   <div class="keypad">
     <button class="btn btn-dark" onclick="appendInput('7')">7</button>
     <button class="btn btn-dark" onclick="appendInput('8')">8</button>
     <button class="btn btn-dark" onclick="appendInput('9')">9</button>
-    <button class="btn btn-orange" onclick="appendInput('+')">+</button>
+    <button class="btn btn-orange" onclick="appendInput('÷')">÷</button>
 
     <button class="btn btn-dark" onclick="appendInput('4')">4</button>
     <button class="btn btn-dark" onclick="appendInput('5')">5</button>
     <button class="btn btn-dark" onclick="appendInput('6')">6</button>
-    <button class="btn btn-orange" onclick="appendInput('-')">-</button>
+    <button class="btn btn-orange" onclick="appendInput('×')">×</button>
 
     <button class="btn btn-dark" onclick="appendInput('1')">1</button>
     <button class="btn btn-dark" onclick="appendInput('2')">2</button>
     <button class="btn btn-dark" onclick="appendInput('3')">3</button>
-    <button class="btn btn-orange" onclick="appendInput('×')">×</button>
+    <button class="btn btn-orange" onclick="appendInput('-')">-</button>
 
     <button class="btn btn-dark" onclick="clearAll()">C</button>
     <button class="btn btn-dark" onclick="appendInput('0')">0</button>
     <button class="btn btn-dark" onclick="backspace()">←</button>
-    <button class="btn btn-orange" onclick="appendInput('÷')">÷</button>
+    <button class="btn btn-orange" onclick="appendInput('+')">+</button>
   </div>
 </div>
 
