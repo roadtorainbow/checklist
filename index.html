@@ -14,7 +14,7 @@
     html, body {
       width: 100vw;
       height: 100vh;
-      height: 100dvh; /* 適應動態手機網址列 */
+      height: 100dvh;
       overflow: hidden;
       background-color: #000000;
       color: #ffffff;
@@ -41,8 +41,8 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 18px;
+      font-weight: 600;
       color: #ddd;
     }
     .rate-item {
@@ -51,18 +51,18 @@
       gap: 6px;
     }
     .rate-item input {
-      width: 70px;
+      width: 80px;
       background: #2c2c2e;
       border: 1px solid #555;
       color: #fff;
       border-radius: 8px;
       text-align: right;
       padding: 4px 6px;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
     }
 
-    /* 顯示區域 */
+    /* 顯示區域 (大幅放大數字) */
     .display-area {
       flex: 1;
       display: flex;
@@ -75,7 +75,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 16px;
+      padding: 12px 16px;
       border-radius: 16px;
       cursor: pointer;
       user-select: none;
@@ -88,7 +88,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
       color: #ff9f0a;
     }
@@ -96,19 +96,19 @@
       color: #aaa;
     }
     .currency-amount {
-      font-size: 48px;
-      font-weight: 600;
+      font-size: 64px; /* 數字再次放大 */
+      font-weight: 700;
       word-break: break-all;
       text-align: right;
-      line-height: 1.2;
+      line-height: 1.1;
     }
     .switch-hint {
-      font-size: 12px;
+      font-size: 14px;
       color: #777;
       margin-left: 4px;
     }
 
-    /* 按鈕區域 */
+    /* 按鈕區域 (按鈕與字體加大) */
     .keypad {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -116,10 +116,10 @@
       padding-bottom: 10px;
     }
     .btn {
-      height: 76px;
+      height: 80px;
       border: none;
-      border-radius: 18px;
-      font-size: 34px;
+      border-radius: 20px;
+      font-size: 42px; /* 按鈕數字放大 */
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -138,7 +138,7 @@
     .btn-orange {
       background-color: #ff9f0a;
       color: #ffffff;
-      font-size: 38px;
+      font-size: 48px; /* 運算符號放大 */
     }
   </style>
 </head>
@@ -162,7 +162,7 @@
     <!-- 外幣輸入區 -->
     <div class="currency-row active" onclick="switchCurrency()">
       <div class="currency-tag" id="label-target">
-        🇯🇵 JPY <span class="switch-hint">(點擊切換)</span>
+        🇯🇵 JPY <span class="switch-hint">(切換)</span>
       </div>
       <div class="currency-amount" id="val-target">0</div>
     </div>
@@ -173,27 +173,27 @@
     </div>
   </div>
 
-  <!-- 3. 計算機按鈕區 -->
+  <!-- 3. 計算機按鈕區 (右側運算符號依序為 + - × ÷) -->
   <div class="keypad">
     <button class="btn btn-dark" onclick="appendInput('7')">7</button>
     <button class="btn btn-dark" onclick="appendInput('8')">8</button>
     <button class="btn btn-dark" onclick="appendInput('9')">9</button>
-    <button class="btn btn-orange" onclick="appendInput('÷')">÷</button>
+    <button class="btn btn-orange" onclick="appendInput('+')">+</button>
 
     <button class="btn btn-dark" onclick="appendInput('4')">4</button>
     <button class="btn btn-dark" onclick="appendInput('5')">5</button>
     <button class="btn btn-dark" onclick="appendInput('6')">6</button>
-    <button class="btn btn-orange" onclick="appendInput('×')">×</button>
+    <button class="btn btn-orange" onclick="appendInput('-')">-</button>
 
     <button class="btn btn-dark" onclick="appendInput('1')">1</button>
     <button class="btn btn-dark" onclick="appendInput('2')">2</button>
     <button class="btn btn-dark" onclick="appendInput('3')">3</button>
-    <button class="btn btn-orange" onclick="appendInput('-')">-</button>
+    <button class="btn btn-orange" onclick="appendInput('×')">×</button>
 
     <button class="btn btn-dark" onclick="clearAll()">C</button>
     <button class="btn btn-dark" onclick="appendInput('0')">0</button>
     <button class="btn btn-dark" onclick="backspace()">←</button>
-    <button class="btn btn-orange" onclick="appendInput('+')">+</button>
+    <button class="btn btn-orange" onclick="appendInput('÷')">÷</button>
   </div>
 </div>
 
@@ -214,8 +214,8 @@
   function switchCurrency() {
     currentCurrency = (currentCurrency === "JPY") ? "CNY" : "JPY";
     labelTarget.innerHTML = currentCurrency === "JPY" 
-      ? '🇯🇵 JPY <span class="switch-hint">(點擊切換)</span>' 
-      : '🇨🇳 CNY <span class="switch-hint">(點擊切換)</span>';
+      ? '🇯🇵 JPY <span class="switch-hint">(切換)</span>' 
+      : '🇨🇳 CNY <span class="switch-hint">(切換)</span>';
     updateResult();
   }
 
