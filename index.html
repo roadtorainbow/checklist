@@ -58,7 +58,7 @@
 
     .top-controls {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       margin-bottom: 12px;
     }
@@ -124,6 +124,30 @@
       margin: 0;
       color: var(--muted);
       font-size: 1rem;
+    }
+
+    /* 完成時顯示的快樂提示框 */
+    .congrats-banner {
+      display: none;
+      background: linear-gradient(135deg, #ffb4cf, #c4a7ff);
+      color: white;
+      text-align: center;
+      padding: 14px 18px;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: calc(var(--font-base) * 1.05);
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(230, 111, 154, 0.3);
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .congrats-banner.show {
+      display: block;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .progress-card, .category-progress-card, .category {
@@ -252,7 +276,31 @@
     .toolbar {
       display: flex;
       justify-content: flex-end;
+      align-items: center;
       margin: 0 0 14px;
+    }
+
+    .select-all-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff0c7;
+      color: #7d6230;
+      border: 1px solid #ffe3a0;
+      padding: 8px 16px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 2px 6px rgba(255, 227, 160, 0.4);
+    }
+
+    .select-all-label input {
+      width: 18px;
+      height: 18px;
+      accent-color: #e66f9a;
+      cursor: pointer;
     }
 
     button {
@@ -267,13 +315,6 @@
 
     button:hover { filter: brightness(.98); transform: translateY(-1px); }
     button:active { transform: translateY(0); }
-
-    .reset-btn {
-      background: #fff0c7;
-      color: #7d6230;
-      border: 1px solid #ffe3a0;
-      font-size: 0.9rem;
-    }
 
     #checklist {
       display: grid;
@@ -370,14 +411,13 @@
     @media (max-width: 620px) {
       body { padding: 12px 10px 28px; }
       .category-header { padding: 12px 14px; }
-      .category-header .cat-count { display: none; } /* 手機端省空間隱藏數字 */
+      .category-header .cat-count { display: none; }
     }
   </style>
 </head>
 <body class="font-medium">
   <main class="container">
     <div class="top-controls">
-      <div></div>
       <div class="font-selector">
         <span>字體大小：</span>
         <button class="font-btn" onclick="setFontSize('small')">小</button>
@@ -390,6 +430,11 @@
       <h1>🎀 出國必備行李清單 🎀</h1>
       <p class="subtitle">把要帶的東西整理好，開心出發去旅行吧！✈️💗</p>
     </header>
+
+    <!-- 全部勾選完成時的祝賀提示 -->
+    <div class="congrats-banner" id="congratsBanner">
+      🎉 恭喜，全部都準備好了，可以快樂出發了^^ ✈️✨
+    </div>
 
     <!-- 可點擊展開/收合各大項進度的整體進度卡片 -->
     <section class="progress-card" onclick="toggleCatProgress()" aria-label="點擊展開/收合各大項進度">
@@ -416,9 +461,10 @@
     </section>
 
     <div class="toolbar">
-      <button class="reset-btn" type="button" onclick="resetPackedStatus()">
-        🌷 重置已備狀態（保留清單）
-      </button>
+      <label class="select-all-label">
+        <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this.checked)">
+        <span>全選所有項目</span>
+      </label>
     </div>
 
     <section id="checklist" aria-live="polite"></section>
@@ -430,23 +476,23 @@
   </main>
 
   <script>
-    const STORAGE_KEY = 'travel_checklist_v2';
+    const STORAGE_KEY = 'travel_checklist_v3';
     const FONT_STORAGE_KEY = 'travel_checklist_font';
 
     // 精確調整後的預設清單
     const defaultData = [
-      // 1. 隨身物品與證件
-      { category: '隨身物品與證件', name: '護照', packed: false },
-      { category: '隨身物品與證件', name: 'VJW QRCode', packed: false },
-      { category: '隨身物品與證件', name: '身分證', packed: false },
-      { category: '隨身物品與證件', name: '健保卡', packed: false },
-      { category: '隨身物品與證件', name: '信用卡', packed: false },
-      { category: '隨身物品與證件', name: '提款卡', packed: false },
-      { category: '隨身物品與證件', name: '悠遊卡', packed: false },
-      { category: '隨身物品與證件', name: '日幣', packed: false },
-      { category: '隨身物品與證件', name: '台幣', packed: false },
-      { category: '隨身物品與證件', name: '台鐵車票', packed: false },
-      { category: '隨身物品與證件', name: '手機', packed: false },
+      // 1. 隨身證件
+      { category: '隨身證件', name: '護照', packed: false },
+      { category: '隨身證件', name: 'VJW QRCode', packed: false },
+      { category: '隨身證件', name: '身分證', packed: false },
+      { category: '隨身證件', name: '健保卡', packed: false },
+      { category: '隨身證件', name: '信用卡', packed: false },
+      { category: '隨身證件', name: '提款卡', packed: false },
+      { category: '隨身證件', name: '悠遊卡', packed: false },
+      { category: '隨身證件', name: '日幣', packed: false },
+      { category: '隨身證件', name: '台幣', packed: false },
+      { category: '隨身證件', name: '台鐵車票', packed: false },
+      { category: '隨身證件', name: '手機', packed: false },
 
       // 2. 衣物穿搭
       { category: '衣物穿搭', name: '衣服', packed: false },
@@ -468,45 +514,39 @@
       { category: '3C 電器', name: 'iPad', packed: false },
       { category: '3C 電器', name: '隨身碟', packed: false },
 
-      // 4. 個人保養與日常工具
-      { category: '個人保養與日常工具', name: '雨傘', packed: false },
-      { category: '個人保養與日常工具', name: '筆', packed: false },
-      { category: '個人保養與日常工具', name: '衛生紙或濕紙巾', packed: false },
-      { category: '個人保養與日常工具', name: '梳子', packed: false },
-      { category: '個人保養與日常工具', name: '牙刷 / 牙膏 / 牙線', packed: false },
-      { category: '個人保養與日常工具', name: '毛巾', packed: false },
-      { category: '個人保養與日常工具', name: '馬桶墊', packed: false },
-      { category: '個人保養與日常工具', name: '衛生棉 / 護墊', packed: false },
-      { category: '個人保養與日常工具', name: 'OK繃', packed: false },
-      { category: '個人保養與日常工具', name: '橡皮筋 / 髮夾 / 髮圈', packed: false },
-      { category: '個人保養與日常工具', name: '指甲刀 / 小剪刀', packed: false },
-      { category: '個人保養與日常工具', name: '藥', packed: false },
-      { category: '個人保養與日常工具', name: '木瓜霜', packed: false },
-      { category: '個人保養與日常工具', name: '痘痘貼 / 保養品 / 防曬', packed: false },
-      { category: '個人保養與日常工具', name: '口罩', packed: false },
-      { category: '個人保養與日常工具', name: '扇子', packed: false },
-      { category: '個人保養與日常工具', name: '飾品', packed: false },
-      { category: '個人保養與日常工具', name: '刮鬍刀', packed: false },
-      { category: '個人保養與日常工具', name: '酸痛藥布', packed: false },
-      { category: '個人保養與日常工具', name: '去污筆', packed: false },
-      { category: '個人保養與日常工具', name: '酒精棉片', packed: false },
-      { category: '個人保養與日常工具', name: '室內拖鞋', packed: false },
-      { category: '個人保養與日常工具', name: '垃圾袋', packed: false },
-      { category: '個人保養與日常工具', name: '收納行李袋', packed: false }
+      // 4. 日常用品
+      { category: '日常用品', name: '雨傘', packed: false },
+      { category: '日常用品', name: '筆', packed: false },
+      { category: '日常用品', name: '衛生紙或濕紙巾', packed: false },
+      { category: '日常用品', name: '梳子', packed: false },
+      { category: '日常用品', name: '牙刷 / 牙膏 / 牙線', packed: false },
+      { category: '日常用品', name: '毛巾', packed: false },
+      { category: '日常用品', name: '馬桶墊', packed: false },
+      { category: '日常用品', name: '衛生棉 / 護墊', packed: false },
+      { category: '日常用品', name: 'OK繃', packed: false },
+      { category: '日常用品', name: '橡皮筋 / 髮夾 / 髮圈', packed: false },
+      { category: '日常用品', name: '指甲刀 / 小剪刀', packed: false },
+      { category: '日常用品', name: '藥', packed: false },
+      { category: '日常用品', name: '木瓜霜', packed: false },
+      { category: '日常用品', name: '痘痘貼 / 保養品 / 防曬', packed: false },
+      { category: '日常用品', name: '口罩', packed: false },
+      { category: '日常用品', name: '室內拖鞋', packed: false },
+      { category: '日常用品', name: '垃圾袋', packed: false },
+      { category: '日常用品', name: '收納行李袋', packed: false }
     ];
 
     const categoryOrder = [
-      '隨身物品與證件',
+      '隨身證件',
       '衣物穿搭',
       '3C 電器',
-      '個人保養與日常工具'
+      '日常用品'
     ];
 
     const categoryIcons = {
-      '隨身物品與證件': '🪪',
+      '隨身證件': '🪪',
       '衣物穿搭': '👗',
       '3C 電器': '🎧',
-      '個人保養與日常工具': '🧴'
+      '日常用品': '🧴'
     };
 
     function loadItems() {
@@ -570,6 +610,22 @@
 
       document.getElementById('progressText').textContent = `${packedCount} / ${total}（${percent}%）`;
       document.getElementById('progressBar').style.width = `${percent}%`;
+
+      // 同步全選勾選框狀態
+      const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+      if (selectAllCheckbox) {
+        selectAllCheckbox.checked = (total > 0 && packedCount === total);
+      }
+
+      // 全部完成時顯示祝賀訊息框
+      const congratsBanner = document.getElementById('congratsBanner');
+      if (congratsBanner) {
+        if (total > 0 && packedCount === total) {
+          congratsBanner.classList.add('show');
+        } else {
+          congratsBanner.classList.remove('show');
+        }
+      }
 
       const grid = document.getElementById('catProgressGrid');
       grid.innerHTML = '';
@@ -667,6 +723,12 @@
       updateProgress(categories);
     }
 
+    /* 全選 / 全取消 功能 */
+    function toggleSelectAll(checked) {
+      items.forEach(item => item.packed = checked);
+      saveItems();
+    }
+
     /* 單獨在大項新增物品 */
     function addItemToCategory(categoryName) {
       const name = prompt(`要在「${categoryName}」新增什麼物品？`);
@@ -698,12 +760,6 @@
       if (!confirm(`確定要刪除「${name}」嗎？`)) return;
 
       items.splice(index, 1);
-      saveItems();
-    }
-
-    function resetPackedStatus() {
-      if (!confirm('確定要重置所有「已打包」狀態嗎？清單內容會保留。')) return;
-      items = items.map(item => ({ ...item, packed: false }));
       saveItems();
     }
 
