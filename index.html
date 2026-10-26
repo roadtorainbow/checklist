@@ -117,7 +117,6 @@
       transition: width .25s ease;
     }
 
-    /* 各大項準備進度樣式 */
     .category-progress-card {
       padding: 16px 20px;
       margin-bottom: 18px;
@@ -471,42 +470,84 @@
   </main>
 
   <script>
-    const STORAGE_KEY = 'travel_checklist';
+    const STORAGE_KEY = 'travel_checklist_full_v1';
 
     const defaultData = [
+      // 1. 隨身物品與證件 (13項)
       { category: '隨身物品與證件', name: '護照', packed: false },
+      { category: '隨身物品與證件', name: 'VJW QRCode', packed: false },
       { category: '隨身物品與證件', name: '身分證', packed: false },
-      { category: '隨身物品與證件', name: '機票／電子機票資料', packed: false },
-      { category: '隨身物品與證件', name: '住宿訂房資料', packed: false },
-      { category: '隨身物品與證件', name: '旅遊保險資料', packed: false },
-      { category: '隨身物品與證件', name: '信用卡／金融卡', packed: false },
-      { category: '隨身物品與證件', name: '現金／外幣', packed: false },
-      { category: '隨身物品與證件', name: '緊急聯絡資訊', packed: false },
+      { category: '隨身物品與證件', name: '健保卡', packed: false },
+      { category: '隨身物品與證件', name: '護照用相片', packed: false },
+      { category: '隨身物品與證件', name: '信用卡', packed: false },
+      { category: '隨身物品與證件', name: '提款卡', packed: false },
+      { category: '隨身物品與證件', name: '日幣', packed: false },
+      { category: '隨身物品與證件', name: '台幣', packed: false },
+      { category: '隨身物品與證件', name: '台鐵車票', packed: false },
+      { category: '隨身物品與證件', name: '手機', packed: false },
+      { category: '隨身物品與證件', name: '手機掛繩', packed: false },
+      { category: '隨身物品與證件', name: '證件套', packed: false },
 
-      { category: '衣物穿搭', name: '上衣', packed: false },
-      { category: '衣物穿搭', name: '褲子／裙子', packed: false },
-      { category: '衣物穿搭', name: '內衣褲', packed: false },
+      // 2. 衣物穿搭 (10項)
+      { category: '衣物穿搭', name: '衣服', packed: false },
+      { category: '衣物穿搭', name: '褲子', packed: false },
+      { category: '衣物穿搭', name: '內衣', packed: false },
+      { category: '衣物穿搭', name: '內褲', packed: false },
+      { category: '衣物穿搭', name: '外套', packed: false },
       { category: '衣物穿搭', name: '襪子', packed: false },
-      { category: '衣物穿搭', name: '睡衣', packed: false },
-      { category: '衣物穿搭', name: '外套／薄外套', packed: false },
-      { category: '衣物穿搭', name: '舒適好走的鞋子', packed: false },
-      { category: '衣物穿搭', name: '髒衣袋', packed: false },
+      { category: '衣物穿搭', name: '褲襪', packed: false },
+      { category: '衣物穿搭', name: '圍巾', packed: false },
+      { category: '衣物穿搭', name: '皮帶', packed: false },
+      { category: '衣物穿搭', name: '帽子', packed: false },
 
-      { category: '3C 電器', name: '手機', packed: false },
-      { category: '3C 電器', name: '手機充電器／充電線', packed: false },
+      // 3. 3C 電器 (7項)
       { category: '3C 電器', name: '行動電源', packed: false },
-      { category: '3C 電器', name: '轉接插頭／轉接器', packed: false },
+      { category: '3C 電器', name: '藍牙耳機', packed: false },
+      { category: '3C 電器', name: '充電線', packed: false },
+      { category: '3C 電器', name: '充電器', packed: false },
+      { category: '3C 電器', name: '手機架', packed: false },
+      { category: '3C 電器', name: '自拍棒', packed: false },
+      { category: '3C 電器', name: 'iPad', packed: false },
+      { category: '3C 電器', name: '隨身碟', packed: false },
 
+      // 4. 個人保養與日常工具 (31項)
+      { category: '個人保養與日常工具', name: '雨傘', packed: false },
+      { category: '個人保養與日常工具', name: '筆', packed: false },
+      { category: '個人保養與日常工具', name: '衛生紙或濕紙巾', packed: false },
+      { category: '個人保養與日常工具', name: '簡便袋子', packed: false },
+      { category: '個人保養與日常工具', name: '杯套', packed: false },
+      { category: '個人保養與日常工具', name: '梳子', packed: false },
       { category: '個人保養與日常工具', name: '牙刷', packed: false },
       { category: '個人保養與日常工具', name: '牙膏', packed: false },
+      { category: '個人保養與日常工具', name: '牙線', packed: false },
+      { category: '個人保養與日常工具', name: '毛巾', packed: false },
+      { category: '個人保養與日常工具', name: '馬桶墊', packed: false },
+      { category: '個人保養與日常工具', name: '衛生棉', packed: false },
+      { category: '個人保養與日常工具', name: '護墊', packed: false },
+      { category: '個人保養與日常工具', name: 'OK繃', packed: false },
+      { category: '個人保養與日常工具', name: '橡皮筋', packed: false },
+      { category: '個人保養與日常工具', name: '髮夾', packed: false },
+      { category: '個人保養與日常工具', name: '髮圈', packed: false },
+      { category: '個人保養與日常工具', name: '指甲刀', packed: false },
+      { category: '個人保養與日常工具', name: '小剪刀', packed: false },
+      { category: '個人保養與日常工具', name: '藥', packed: false },
+      { category: '個人保養與日常工具', name: '木瓜霜', packed: false },
+      { category: '個人保養與日常工具', name: '痘痘貼', packed: false },
+      { category: '個人保養與日常工具', name: '保養品', packed: false },
+      { category: '個人保養與日常工具', name: '防曬', packed: false },
+      { category: '個人保養與日常工具', name: '口罩', packed: false },
+      { category: '個人保養與日常工具', name: '扇子', packed: false },
+      { category: '個人保養與日常工具', name: '飾品', packed: false },
+      { category: '個人保養與日常工具', name: '刮鬍刀', packed: false },
+      { category: '個人保養與日常工具', name: '酸痛藥布', packed: false },
+      { category: '個人保養與日常工具', name: '去污筆', packed: false },
+      { category: '個人保養與日常工具', name: '酒精棉片', packed: false },
       { category: '個人保養與日常工具', name: '洗面乳', packed: false },
-      { category: '個人保養與日常工具', name: '保養品／乳液', packed: false },
-      { category: '個人保養與日常工具', name: '防曬乳', packed: false },
-      { category: '個人保養與日常工具', name: '衛生紙／濕紙巾', packed: false },
-      { category: '個人保養與日常工具', name: '常備藥品／個人藥物', packed: false },
-      { category: '個人保養與日常工具', name: '行李箱／旅行袋', packed: false },
-      { category: '個人保養與日常工具', name: '隨身小包', packed: false },
-      { category: '個人保養與日常工具', name: '收納袋／分裝袋', packed: false }
+      { category: '個人保養與日常工具', name: '室內拖鞋', packed: false },
+      { category: '個人保養與日常工具', name: '垃圾袋', packed: false },
+      { category: '個人保養與日常工具', name: '收納行李袋', packed: false },
+      { category: '個人保養與日常工具', name: '洗衣袋', packed: false },
+      { category: '個人保養與日常工具', name: '杯子', packed: false }
     ];
 
     const categoryOrder = [
@@ -539,7 +580,6 @@
 
         return parsed.map(item => {
           let category = String(item.category || '個人保養與日常工具');
-          // 自動將舊分類轉換合併為新分類
           if (category === '個人雜物與保養' || category === '日常與收納工具') {
             category = '個人保養與日常工具';
           }
@@ -550,7 +590,6 @@
           };
         });
       } catch (error) {
-        alert('讀取已儲存清單時發生問題，將先顯示預設清單。');
         return defaultData.map(item => ({ ...item }));
       }
     }
@@ -580,7 +619,6 @@
     }
 
     function updateProgress(categories) {
-      // 1. 計算總進度
       const packedCount = items.filter(item => item.packed).length;
       const total = items.length;
       const percent = total ? Math.round((packedCount / total) * 100) : 0;
@@ -591,7 +629,6 @@
       document.getElementById('progressBar').style.width = `${percent}%`;
       document.getElementById('progressTrack').setAttribute('aria-valuenow', percent);
 
-      // 2. 計算與渲染各大項進度卡片
       const grid = document.getElementById('catProgressGrid');
       grid.innerHTML = '';
 
