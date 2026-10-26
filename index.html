@@ -14,6 +14,7 @@
     html, body {
       width: 100vw;
       height: 100vh;
+      height: 100dvh; /* 適應動態手機網址列 */
       overflow: hidden;
       background-color: #000000;
       color: #ffffff;
@@ -32,43 +33,33 @@
       padding: 16px;
     }
 
-    /* 頂部匯率設定區 + 全螢幕按鈕 */
+    /* 頂部匯率設定區 */
     .rate-setting {
       background: #1c1c1e;
       border-radius: 14px;
-      padding: 10px 14px;
+      padding: 12px 18px;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
-      gap: 8px;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 500;
       color: #ddd;
     }
     .rate-item {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
     }
     .rate-item input {
-      width: 65px;
+      width: 70px;
       background: #2c2c2e;
       border: 1px solid #555;
       color: #fff;
       border-radius: 8px;
       text-align: right;
-      padding: 4px;
-      font-size: 15px;
+      padding: 4px 6px;
+      font-size: 16px;
       font-weight: bold;
-    }
-    .fullscreen-btn {
-      background: #333;
-      border: 1px solid #666;
-      color: #fff;
-      padding: 4px 8px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
     }
 
     /* 顯示區域 */
@@ -153,21 +144,20 @@
 </head>
 <body>
 
-<div class="calculator" id="calc-app">
-  <!-- 1. 自訂匯率設定列 + 全螢幕開關 -->
+<div class="calculator">
+  <!-- 1. 自訂匯率設定列 (日幣預設 0.21) -->
   <div class="rate-setting">
     <div class="rate-item">
       <span>日幣:</span>
-      <input type="number" id="jpy-rate" value="0.215" step="0.001">
+      <input type="number" id="jpy-rate" value="0.21" step="0.001">
     </div>
     <div class="rate-item">
       <span>人民幣:</span>
       <input type="number" id="cny-rate" value="4.50" step="0.01">
     </div>
-    <button class="fullscreen-btn" onclick="toggleFullScreen()">全螢幕</button>
   </div>
 
-  <!-- 2. 金額顯示區 (點擊外幣那行可切換 JPY / CNY) -->
+  <!-- 2. 金額顯示區 (點擊外幣該行切換 JPY / CNY) -->
   <div class="display-area">
     <!-- 外幣輸入區 -->
     <div class="currency-row active" onclick="switchCurrency()">
@@ -200,7 +190,6 @@
     <button class="btn btn-dark" onclick="appendInput('3')">3</button>
     <button class="btn btn-orange" onclick="appendInput('-')">-</button>
 
-    <!-- 改動：左下角改為 C，原本 . 改為 ← -->
     <button class="btn btn-dark" onclick="clearAll()">C</button>
     <button class="btn btn-dark" onclick="appendInput('0')">0</button>
     <button class="btn btn-dark" onclick="backspace()">←</button>
@@ -220,19 +209,6 @@
 
   jpyRateInput.addEventListener("input", updateResult);
   cnyRateInput.addEventListener("input", updateResult);
-
-  // 全螢幕切換
-  function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        alert(`無法進入全螢幕: ${err.message}`);
-      });
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-    }
-  }
 
   // 點擊 JPY/CNY 該行切換幣別
   function switchCurrency() {
