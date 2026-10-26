@@ -297,4 +297,11 @@
     if (e.key === '+') appendInput('+');
     if (e.key === '-') appendInput('-');
     if (e.key === '*') appendInput('×');
-    if (e.key === '/') append
+    if (e.key === '/') appendInput('÷');
+    if (e.key === 'Backspace') backspace();
+    if (e.key === 'Escape' || e.key.toLowerCase() === 'c') clearAll();
+  });
+</script>
+
+</body>
+</html>
