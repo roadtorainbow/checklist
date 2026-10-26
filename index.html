@@ -3,266 +3,304 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>外幣兌換計算機 (台銀即時匯率)</title>
+  <title>外匯計算機</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-      padding: 20px;
+    }
+    body {
+      background-color: #f4f5f9;
       display: flex;
       justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
     }
-    .card {
-      background: #fff;
-      max-width: 480px;
+    .calculator {
       width: 100%;
-      padding: 24px;
+      max-width: 360px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    /* 匯率設定區 */
+    .rate-setting {
+      background: #f8f9fa;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
-    h2 { margin-bottom: 16px; font-size: 1.25rem; color: #1a1a1a; text-align: center; }
-    .status {
-      font-size: 0.85rem;
+    .rate-title {
+      font-size: 13px;
       color: #666;
-      text-align: center;
-      margin-bottom: 20px;
-      padding: 6px;
-      background: #f0f2f5;
-      border-radius: 6px;
+      font-weight: 600;
     }
-    .form-group { margin-bottom: 16px; }
-    label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: #444; }
-    select, input {
-      width: 100%;
-      padding: 10px 12px;
-      font-size: 1rem;
+    .rate-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .rate-input-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .rate-input-group input {
+      width: 80px;
+      padding: 4px 8px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      outline: none;
+      text-align: right;
+      font-size: 14px;
     }
-    select:focus, input:focus { border-color: #0066cc; }
-    .rate-info {
-      background-color: #eef6ff;
-      border-left: 4px solid #0066cc;
-      padding: 10px 12px;
-      margin-bottom: 20px;
-      font-size: 0.9rem;
-      border-radius: 0 6px 6px 0;
+
+    /* 幣別選擇切換 */
+    .currency-selector {
+      display: flex;
+      background: #eee;
+      border-radius: 10px;
+      padding: 3px;
     }
-    .btn-sync {
-      width: 100%;
-      padding: 10px;
-      background-color: #0066cc;
-      color: white;
+    .currency-btn {
+      flex: 1;
       border: none;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      cursor: pointer;
+      background: transparent;
+      padding: 8px 0;
+      border-radius: 8px;
+      font-size: 14px;
       font-weight: 600;
-      margin-top: 8px;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.2s;
     }
-    .btn-sync:hover { background-color: #0052a3; }
-    .btn-sync:disabled { background-color: #ccc; cursor: not-allowed; }
+    .currency-btn.active {
+      background: #fff;
+      color: #2b3a4a;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* 顯示螢幕 */
+    .screen {
+      text-align: right;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 10px 0;
+    }
+    .expression {
+      font-size: 28px;
+      color: #222;
+      word-break: break-all;
+      min-height: 36px;
+    }
+    .result {
+      font-size: 22px;
+      color: #4c5d73;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* 按鈕區域 */
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .btn {
+      aspect-ratio: 1;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: filter 0.15s, transform 0.1s;
+      user-select: none;
+    }
+    .btn:active {
+      transform: scale(0.95);
+    }
+    /* 按鈕色彩設定 (仿圖片風格) */
+    .btn-num {
+      background-color: #e8ecef;
+      color: #1a1a1a;
+    }
+    .btn-op {
+      background-color: #5c7080;
+      color: #ffffff;
+    }
+    .btn-func {
+      background-color: #4a6fa5;
+      color: #ffffff;
+    }
+    .btn-equal {
+      background-color: #2b3a55;
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <h2>外幣兌換計算機</h2>
-  <div id="status" class="status">正在取得台銀最新匯率...</div>
-
-  <div class="form-group">
-    <label for="currencySelect">選擇目標外幣</label>
-    <select id="currencySelect" onchange="handleCurrencyChange()">
-      <!-- 動態載入 -->
-    </select>
+<div class="calculator">
+  <!-- 1. 自訂匯率設定 -->
+  <div class="rate-setting">
+    <div class="rate-title">自訂匯率 (1 外幣 = ? 新台幣)</div>
+    <div class="rate-row">
+      <label for="jpy-rate">日幣 (JPY):</label>
+      <div class="rate-input-group">
+        <input type="number" id="jpy-rate" value="0.215" step="0.001"> TWD
+      </div>
+    </div>
+    <div class="rate-row">
+      <label for="cny-rate">人民幣 (CNY):</label>
+      <div class="rate-input-group">
+        <input type="number" id="cny-rate" value="4.500" step="0.01"> TWD
+      </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label for="rateType">匯率類型</label>
-    <select id="rateType" onchange="calculate()">
-      <option value="cashSelling">現金賣出 (換外幣現鈔最常用)</option>
-      <option value="spotSelling">即期賣出 (網銀/刷卡扣款)</option>
-    </select>
+  <!-- 2. 幣別選擇器 -->
+  <div class="currency-selector">
+    <button class="currency-btn active" id="btn-jpy" onclick="setCurrency('JPY')">日幣 JPY</button>
+    <button class="currency-btn" id="btn-cny" onclick="setCurrency('CNY')">人民幣 CNY</button>
   </div>
 
-  <div class="rate-info" id="rateDisplay">
-    當前適用匯率：--
+  <!-- 3. 計算與結果顯示區 -->
+  <div class="screen">
+    <div class="expression" id="expression">0</div>
+    <div class="result" id="result">≈ 0 TWD</div>
   </div>
 
-  <div class="form-group">
-    <label for="twdInput">新台幣金額 (TWD)</label>
-    <input type="number" id="twdInput" placeholder="輸入台幣金額" oninput="convertTwdToForeign()">
-  </div>
+  <!-- 4. 計算機按鈕區 -->
+  <div class="keypad">
+    <button class="btn btn-func" onclick="clearAll()">AC</button>
+    <button class="btn btn-op" onclick="appendInput('(')">(</button>
+    <button class="btn btn-op" onclick="appendInput(')')">)</button>
+    <button class="btn btn-op" onclick="appendInput('÷')">÷</button>
 
-  <div class="form-group">
-    <label for="foreignInput">外幣金額</label>
-    <input type="number" id="foreignInput" placeholder="輸入外幣金額" oninput="convertForeignToTwd()">
-  </div>
+    <button class="btn btn-num" onclick="appendInput('7')">7</button>
+    <button class="btn btn-num" onclick="appendInput('8')">8</button>
+    <button class="btn btn-num" onclick="appendInput('9')">9</button>
+    <button class="btn btn-op" onclick="appendInput('×')">×</button>
 
-  <button class="btn-sync" id="syncBtn" onclick="fetchRates()">更新牌告匯率</button>
+    <button class="btn btn-num" onclick="appendInput('4')">4</button>
+    <button class="btn btn-num" onclick="appendInput('5')">5</button>
+    <button class="btn btn-num" onclick="appendInput('6')">6</button>
+    <button class="btn btn-op" onclick="appendInput('-')">-</button>
+
+    <button class="btn btn-num" onclick="appendInput('1')">1</button>
+    <button class="btn btn-num" onclick="appendInput('2')">2</button>
+    <button class="btn btn-num" onclick="appendInput('3')">3</button>
+    <button class="btn btn-op" onclick="appendInput('+')">+</button>
+
+    <button class="btn btn-num" onclick="appendInput('0')">0</button>
+    <button class="btn btn-num" onclick="appendInput('.')">.</button>
+    <button class="btn btn-op" onclick="backspace()">⌫</button>
+    <button class="btn btn-equal" onclick="calculate()">=</button>
+  </div>
 </div>
 
 <script>
-  let rateData = {}; // 儲存解析後的匯率資料
+  let currentInput = "0";
+  let currentCurrency = "JPY";
 
-  // 頁面載入時先讀取快取，再連線更新
-  window.addEventListener('DOMContentLoaded', () => {
-    loadCachedRates();
-    fetchRates();
-  });
+  const expressionEl = document.getElementById("expression");
+  const resultEl = document.getElementById("result");
+  const jpyRateInput = document.getElementById("jpy-rate");
+  const cnyRateInput = document.getElementById("cny-rate");
 
-  async function fetchRates() {
-    const statusEl = document.getElementById('status');
-    const syncBtn = document.getElementById('syncBtn');
-    statusEl.innerText = "正在讀取台銀牌告匯率...";
-    syncBtn.disabled = true;
+  // 監聽匯率變動時即時更新計算結果
+  jpyRateInput.addEventListener("input", updateResult);
+  cnyRateInput.addEventListener("input", updateResult);
 
-    // 使用 CORS Proxy 讀取台銀 CSV 檔案
-    const targetUrl = 'https://rate.bot.com.tw/xrt/flcsv/0/day';
-    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
+  function setCurrency(currency) {
+    currentCurrency = currency;
+    document.getElementById("btn-jpy").classList.toggle("active", currency === 'JPY');
+    document.getElementById("btn-cny").classList.toggle("active", currency === 'CNY');
+    updateResult();
+  }
 
+  function appendInput(val) {
+    if (currentInput === "0" && !isNaN(val)) {
+      currentInput = val;
+    } else {
+      currentInput += val;
+    }
+    updateDisplay();
+  }
+
+  function backspace() {
+    if (currentInput.length > 1) {
+      currentInput = currentInput.slice(0, -1);
+    } else {
+      currentInput = "0";
+    }
+    updateDisplay();
+  }
+
+  function clearAll() {
+    currentInput = "0";
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    expressionEl.innerText = currentInput;
+    updateResult();
+  }
+
+  function getCalculatedValue() {
     try {
-      const response = await fetch(proxyUrl);
-      if (!response.ok) throw new Error(`HTTP 錯誤: ${response.status}`);
-      
-      const csvText = await response.text();
-      parseCSV(csvText);
-
-      // 寫入 localStorage 快取
-      const cacheObj = {
-        timestamp: new Date().toLocaleString('zh-TW'),
-        data: rateData
-      };
-      localStorage.setItem('bot_exchange_rates', JSON.stringify(cacheObj));
-
-      statusEl.innerText = `更新成功！(更新時間: ${cacheObj.timestamp})`;
-      populateCurrencyOptions();
-    } catch (err) {
-      console.error(err);
-      statusEl.innerText = "連線失敗，改用離線快取資料。";
-      if (Object.keys(rateData).length === 0) {
-        loadCachedRates();
-      }
-    } finally {
-      syncBtn.disabled = false;
+      // 替換運算符號為 JavaScript 可執行的語法
+      let rawExpression = currentInput.replace(/×/g, '*').replace(/÷/g, '/');
+      // 安全評估數學表達式
+      let val = Function('"use strict"; return (' + rawExpression + ')')();
+      return isNaN(val) || !isFinite(val) ? 0 : val;
+    } catch (e) {
+      return 0;
     }
   }
 
-  function parseCSV(text) {
-    const lines = text.split('\n');
-    const newRateData = {};
-
-    lines.forEach((line, index) => {
-      if (index === 0 || !line.trim()) return; // 略過標頭或空行
-      
-      // 處理 CSV 欄位，去除雙引號與多餘空白
-      const cols = line.split(',').map(c => c.replace(/"/g, '').trim());
-      
-      if (cols.length >= 13) {
-        const nameAndCode = cols[0]; // 例: "日圓 (JPY)"
-        const match = nameAndCode.match(/\(([A-Z]+)\)/);
-        const code = match ? match[1] : null;
-
-        if (code) {
-          newRateData[code] = {
-            name: nameAndCode,
-            cashBuying: parseFloat(cols[2]) || null,   // 現買
-            cashSelling: parseFloat(cols[12]) || null,  // 現賣
-            spotBuying: parseFloat(cols[3]) || null,   // 即買
-            spotSelling: parseFloat(cols[13]) || null  // 即賣
-          };
-        }
-      }
-    });
-
-    if (Object.keys(newRateData).length > 0) {
-      rateData = newRateData;
-    }
-  }
-
-  function loadCachedRates() {
-    const cached = localStorage.getItem('bot_exchange_rates');
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        rateData = parsed.data;
-        document.getElementById('status').innerText = `目前為快取資料 (${parsed.timestamp})`;
-        populateCurrencyOptions();
-      } catch (e) {
-        console.error("快取解析失敗", e);
-      }
-    }
-  }
-
-  function populateCurrencyOptions() {
-    const select = document.getElementById('currencySelect');
-    const savedCurrency = localStorage.getItem('selected_currency') || 'JPY';
-    select.innerHTML = '';
-
-    for (const [code, info] of Object.entries(rateData)) {
-      const option = document.createElement('option');
-      option.value = code;
-      option.textContent = `${info.name}`;
-      if (code === savedCurrency) option.selected = true;
-      select.appendChild(option);
-    }
-
-    handleCurrencyChange();
-  }
-
-  function handleCurrencyChange() {
-    const code = document.getElementById('currencySelect').value;
-    localStorage.setItem('selected_currency', code);
-    calculate();
-  }
-
-  function getActiveRate() {
-    const code = document.getElementById('currencySelect').value;
-    const type = document.getElementById('rateType').value;
-    if (!rateData[code]) return null;
-
-    const rate = rateData[code][type];
-    return rate;
+  function updateResult() {
+    let rawAmount = getCalculatedValue();
+    let rate = currentCurrency === 'JPY' 
+      ? parseFloat(jpyRateInput.value) || 0 
+      : parseFloat(cnyRateInput.value) || 0;
+    
+    let twdAmount = Math.round(rawAmount * rate);
+    resultEl.innerText = `≈ ${twdAmount.toLocaleString()} TWD`;
   }
 
   function calculate() {
-    const rate = getActiveRate();
-    const rateDisplay = document.getElementById('rateDisplay');
-
-    if (!rate) {
-      rateDisplay.innerText = "當前適用匯率：暫無此資料";
-      return;
-    }
-
-    rateDisplay.innerText = `當前適用匯率：1 外幣 = ${rate} TWD`;
-    
-    // 若已有輸入金額，重新換算
-    const twd = document.getElementById('twdInput').value;
-    if (twd) convertTwdToForeign();
+    let rawAmount = getCalculatedValue();
+    currentInput = rawAmount.toString();
+    updateDisplay();
   }
 
-  function convertTwdToForeign() {
-    const rate = getActiveRate();
-    const twd = parseFloat(document.getElementById('twdInput').value);
-    if (!rate || isNaN(twd)) {
-      document.getElementById('foreignInput').value = '';
-      return;
-    }
-    document.getElementById('foreignInput').value = (twd / rate).toFixed(2);
-  }
-
-  function convertForeignToTwd() {
-    const rate = getActiveRate();
-    const foreign = parseFloat(document.getElementById('foreignInput').value);
-    if (!rate || isNaN(foreign)) {
-      document.getElementById('twdInput').value = '';
-      return;
-    }
-    document.getElementById('twdInput').value = Math.round(foreign * rate);
-  }
+  // 支援實體鍵盤輸入
+  document.addEventListener('keydown', (e) => {
+    if ((e.key >= '0' && e.key <= '9') || e.key === '.') appendInput(e.key);
+    if (e.key === '+') appendInput('+');
+    if (e.key === '-') appendInput('-');
+    if (e.key === '*') appendInput('×');
+    if (e.key === '/') appendInput('÷');
+    if (e.key === '(' || e.key === ')') appendInput(e.key);
+    if (e.key === 'Enter' || e.key === '=') calculate();
+    if (e.key === 'Backspace') backspace();
+    if (e.key === 'Escape') clearAll();
+  });
 </script>
 
 </body>
