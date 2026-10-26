@@ -1,1677 +1,269 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖繩 7天6夜行程指南</title>
-    <style>
-        :root {
-            --primary-color: #0077b6;
-            --primary-dark: #023e8a;
-            --secondary-color: #00b4d8;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #111111;
-            --border-color: #dee2e6;
-            --accent-color: #e63946;
-
-            /* 清單專用粉色系與字級變數 */
-            --pink: #ff8fb1;
-            --purple: #a78bfa;
-            --yellow: #ffe08a;
-            --mint: #a7ead5;
-            --blue: #a8d8ff;
-            --ink: #51465f;
-            --muted: #8f849b;
-            --card: rgba(255,255,255,.92);
-            --shadow: 0 8px 24px rgba(126, 91, 148, .12);
-            --font-base: 1.15rem;
-            --font-title: 1.4rem;
-            --font-hero: clamp(1.8rem, 6vw, 2.65rem);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html, body {
-            -webkit-text-size-adjust: 100%;
-            -moz-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            text-size-adjust: 100%;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-size: 1.5rem;
-            line-height: 1.6;
-            padding-bottom: 60px;
-        }
-
-        /* 清單動態字體切換類別 */
-        body.font-small {
-            --font-base: 0.95rem;
-            --font-title: 1.15rem;
-        }
-        body.font-medium {
-            --font-base: 1.15rem;
-            --font-title: 1.4rem;
-        }
-        body.font-large {
-            --font-base: 1.35rem;
-            --font-title: 1.6rem;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
-            color: white;
-            text-align: center;
-            padding: 1.8rem 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* 導覽分頁按鈕 */
-        .nav-tabs {
-            display: flex;
-            overflow-x: auto;
-            background-color: #ffffff;
-            border-bottom: 3px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .tab-btn {
-            padding: 1.2rem 1.4rem;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border: none;
-            background: none;
-            color: #333333;
-            cursor: pointer;
-            white-space: nowrap;
-            border-bottom: 5px solid transparent;
-            transition: all 0.2s ease;
-        }
-
-        .tab-btn.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-            background-color: #eef7fc;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 1.5rem auto;
-            padding: 0 1rem;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        h2 {
-            font-size: 2rem;
-            color: var(--primary-dark);
-            margin-bottom: 1.2rem;
-            border-left: 6px solid var(--primary-color);
-            padding-left: 0.6rem;
-        }
-
-        /* 表格樣式調整 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.2rem 0;
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        }
-
-        th, td {
-            padding: 1.1rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-
-        th:first-child, td:first-child {
-            width: 1%;
-            white-space: nowrap;
-            padding-right: 1.2rem;
-        }
-
-        td:first-child {
-            font-size: 1.3rem;
-        }
-
-        td:nth-child(2) {
-            font-size: 1.5rem;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .insurance-table th:first-child, .insurance-table td:first-child {
-            width: auto;
-            white-space: normal;
-        }
-
-        .insurance-table td {
-            font-size: 1.35rem !important;
-        }
-
-        /* 圖片樣式 */
-        .img-container {
-            width: 100%;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.12);
-            background-color: #e9ecef;
-        }
-
-        .img-container img {
-            width: 100%;
-            height: 380px;
-            object-fit: cover;
-            display: block;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .img-container img:hover {
-            transform: scale(1.02);
-        }
-
-        /* 提醒卡片 */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.4rem;
-            margin-bottom: 1.4rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            border-left: 6px solid var(--secondary-color);
-            font-size: 1.5rem;
-        }
-
-        .card.warning {
-            border-left-color: var(--accent-color);
-            background-color: #fff5f5;
-        }
-
-        .card-title {
-            font-weight: bold;
-            font-size: 1.6rem;
-            margin-bottom: 0.6rem;
-            color: var(--primary-dark);
-        }
-
-        ul {
-            padding-left: 1.4rem;
-            margin-bottom: 1rem;
-        }
-
-        li {
-            margin-bottom: 0.6rem;
-        }
-
-        /* Lightbox Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 4px;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* ================= 行李清單分頁專用 CSS ================= */
-        .checklist-wrapper {
-            color: var(--ink);
-        }
-
-        .top-controls {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .font-selector {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--card);
-            padding: 6px 12px;
-            border-radius: 99px;
-            box-shadow: var(--shadow);
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .font-btn {
-            border: none;
-            background: transparent;
-            padding: 4px 10px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 800;
-            color: var(--muted);
-        }
-
-        .font-btn.active {
-            background: #c4a7ff;
-            color: white;
-        }
-
-        .hero-checklist {
-            text-align: center;
-            padding: 24px 18px 20px;
-            margin-bottom: 18px;
-            border: 2px solid rgba(255,255,255,.9);
-            border-radius: 30px;
-            background: rgba(255,255,255,.72);
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-checklist::before, .hero-checklist::after {
-            content: "✦";
-            position: absolute;
-            color: #ffb4cf;
-            font-size: 28px;
-        }
-
-        .hero-checklist::before { top: 18px; left: 22px; }
-        .hero-checklist::after { right: 22px; bottom: 18px; color: #b9a5ff; }
-
-        .hero-checklist h3 {
-            margin: 0 0 8px;
-            color: #e66f9a;
-            font-size: var(--font-hero);
-            letter-spacing: 1px;
-            line-height: 1.35;
-        }
-
-        .hero-checklist .subtitle {
-            margin: 0;
-            color: var(--muted);
-            font-size: 1rem;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(81, 70, 95, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
-        .modal-card {
-            background: white;
-            border-radius: 28px;
-            padding: 32px 24px;
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 12px 32px rgba(230, 111, 154, 0.3);
-            border: 3px solid #ffb4cf;
-            animation: modalPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes modalPop {
-            0% { transform: scale(0.7); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-card h2 {
-            font-size: 2.2rem;
-            color: #e66f9a;
-            margin: 0 0 16px;
-            line-height: 1.4;
-            border-left: none;
-            padding-left: 0;
-        }
-
-        .modal-card p {
-            font-size: 1.2rem;
-            color: var(--ink);
-            margin-bottom: 24px;
-            font-weight: 700;
-        }
-
-        .modal-close-btn {
-            background: linear-gradient(135deg, #ff9fbd, #c4a7ff);
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            border-radius: 99px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255, 143, 177, 0.4);
-        }
-
-        .progress-card, .category-progress-card, .category-card {
-            background: var(--card);
-            border: 2px solid rgba(255,255,255,.95);
-            border-radius: 24px;
-            box-shadow: var(--shadow);
-        }
-
-        .progress-card {
-            padding: 18px 20px;
-            margin-bottom: 14px;
-            cursor: pointer;
-            user-select: none;
-            transition: transform .15s ease;
-        }
-
-        .progress-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .progress-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 10px;
-            font-weight: 800;
-            font-size: var(--font-base);
-        }
-
-        #progressText { color: #e66f9a; }
-
-        .progress-track {
-            height: 16px;
-            background: #f2eafa;
-            border-radius: 99px;
-            overflow: hidden;
-            border: 1px solid #eadff8;
-        }
-
-        #progressBar {
-            width: 0%;
-            height: 100%;
-            border-radius: inherit;
-            background: linear-gradient(90deg, #ff9fbd, #c4a7ff, #8de0c7);
-            transition: width .25s ease;
-        }
-
-        .toggle-hint {
-            text-align: right;
-            font-size: 0.8rem;
-            color: #a78bfa;
-            margin-top: 6px;
-            font-weight: 700;
-        }
-
-        .category-progress-card {
-            padding: 16px 20px;
-            margin-bottom: 18px;
-            display: none;
-        }
-
-        .category-progress-card.open {
-            display: block;
-        }
-
-        .cat-progress-title {
-            font-size: var(--font-base);
-            font-weight: 800;
-            margin: 0 0 12px;
-            color: #7a63b8;
-        }
-
-        .cat-progress-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
-        }
-
-        .cat-progress-item {
-            background: #fffafd;
-            border: 1.5px solid #eee4f7;
-            border-radius: 14px;
-            padding: 10px 12px;
-            cursor: pointer;
-            transition: transform 0.15s ease, border-color 0.15s ease;
-        }
-
-        .cat-progress-item:hover {
-            transform: translateY(-2px);
-            border-color: #c4a7ff;
-        }
-
-        .cat-progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: calc(var(--font-base) * 0.85);
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .cat-progress-name {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .cat-progress-val {
-            color: #9d85e8;
-        }
-
-        .cat-progress-track {
-            height: 8px;
-            background: #f0e7fa;
-            border-radius: 99px;
-            overflow: hidden;
-        }
-
-        .cat-progress-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: inherit;
-            background: #c4a7ff;
-            transition: width .25s ease;
-        }
-
-        .checklist-wrapper button {
-            border: 0;
-            border-radius: 14px;
-            padding: 6px 12px;
-            font-weight: 800;
-            cursor: pointer;
-            font-size: var(--font-base);
-            transition: transform .15s ease, filter .15s ease;
-        }
-
-        .checklist-wrapper button:hover { filter: brightness(.98); transform: translateY(-1px); }
-        .checklist-wrapper button:active { transform: translateY(0); }
-
-        #checklist {
-            display: grid;
-            gap: 18px;
-        }
-
-        .category-card {
-            overflow: hidden;
-            scroll-margin-top: 80px;
-        }
-
-        .category-header {
-            padding: 15px 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: var(--font-title);
-            font-weight: 900;
-            flex-wrap: wrap;
-        }
-
-        .category-header .cat-emoji { font-size: 1.4em; }
-
-        .category-header .cat-title-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .category-header .cat-count {
-            font-size: 0.85rem;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 99px;
-            background: rgba(255,255,255,.7);
-            white-space: nowrap;
-        }
-
-        .cat-actions {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .toggle-cat-btn {
-            background: rgba(255,255,255,.9);
-            color: inherit;
-            border: 1.5px solid currentColor;
-            padding: 5px 10px;
-            font-size: 0.85rem;
-            border-radius: 12px;
-        }
-
-        .add-cat-btn {
-            background: rgba(255,255,255,.85);
-            color: inherit;
-            border: 1.5px solid currentColor;
-            padding: 5px 10px;
-            font-size: 0.85rem;
-            border-radius: 12px;
-        }
-
-        .cat-0 .category-header { background: #ffe4ee; color: #a64e76; }
-        .cat-1 .category-header { background: #fff0c9; color: #8b6a26; }
-        .cat-2 .category-header { background: #e5ddff; color: #7054b4; }
-        .cat-3 .category-header { background: #d9f7ed; color: #367f6b; }
-
-        .items-list { padding: 8px 14px 14px; }
-
-        .item-row {
-            display: grid;
-            grid-template-columns: 28px minmax(0, 1fr) auto;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 7px;
-            border-bottom: 1px dashed #eee4f4;
-            min-height: 52px;
-        }
-
-        .item-row:last-child { border-bottom: 0; }
-
-        .item-check {
-            width: 24px;
-            height: 24px;
-            accent-color: #ec83aa;
-            cursor: pointer;
-        }
-
-        .item-name {
-            font-size: var(--font-base);
-            line-height: 1.5;
-            overflow-wrap: anywhere;
-            cursor: pointer;
-        }
-
-        .item-row.packed .item-name {
-            color: #a39aaa;
-            text-decoration: line-through;
-            text-decoration-thickness: 2px;
-        }
-
-        .delete-btn {
-            padding: 6px 10px;
-            border-radius: 10px;
-            color: #bf6281;
-            background: #fff0f5;
-            font-size: 0.85rem;
-        }
-
-        .footer-note {
-            margin-top: 22px;
-            text-align: center;
-            color: #9a8ea5;
-            font-size: .9rem;
-            line-height: 1.7;
-        }
-
-        @media (max-width: 600px) {
-            .tab-btn, th, td:nth-child(2), .card {
-                font-size: 1.35rem;
-            }
-            td:first-child {
-                font-size: 1.2rem;
-            }
-            h2 {
-                font-size: 1.6rem;
-            }
-            .img-container img {
-                height: 300px;
-            }
-            th, td {
-                padding: 0.8rem 0.8rem;
-            }
-            .insurance-table td {
-                font-size: 1.15rem !important;
-            }
-            .category-header { padding: 12px 14px; }
-            .category-header .cat-count { display: none; }
-            .cat-actions { margin-left: auto; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>外幣兌換計算機 (台銀即時匯率)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .card {
+      background: #fff;
+      max-width: 480px;
+      width: 100%;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    h2 { margin-bottom: 16px; font-size: 1.25rem; color: #1a1a1a; text-align: center; }
+    .status {
+      font-size: 0.85rem;
+      color: #666;
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 6px;
+      background: #f0f2f5;
+      border-radius: 6px;
+    }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: #444; }
+    select, input {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+    }
+    select:focus, input:focus { border-color: #0066cc; }
+    .rate-info {
+      background-color: #eef6ff;
+      border-left: 4px solid #0066cc;
+      padding: 10px 12px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .btn-sync {
+      width: 100%;
+      padding: 10px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    .btn-sync:hover { background-color: #0052a3; }
+    .btn-sync:disabled { background-color: #ccc; cursor: not-allowed; }
+  </style>
 </head>
-<body class="font-medium">
+<body>
 
-    <header>
-        <h1>沖繩 7天6夜行程指南</h1>
-    </header>
+<div class="card">
+  <h2>外幣兌換計算機</h2>
+  <div id="status" class="status">正在取得台銀最新匯率...</div>
 
-    <nav class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('hotel')">飯店資訊</button>
-        <button class="tab-btn" onclick="switchTab('flight')">航班資訊</button>
-        <button class="tab-btn" onclick="switchTab('map')">沖繩地圖</button>
-        <button class="tab-btn" onclick="switchTab('day1')">Day 1</button>
-        <button class="tab-btn" onclick="switchTab('day2')">Day 2</button>
-        <button class="tab-btn" onclick="switchTab('day3')">Day 3</button>
-        <button class="tab-btn" onclick="switchTab('day4')">Day 4</button>
-        <button class="tab-btn" onclick="switchTab('day5')">Day 5</button>
-        <button class="tab-btn" onclick="switchTab('day6')">Day 6</button>
-        <button class="tab-btn" onclick="switchTab('day7')">Day 7</button>
-        <button class="tab-btn" onclick="switchTab('insurance')">旅遊保險</button>
-        <button class="tab-btn" onclick="switchTab('checklist')">🧳 行李清單</button>
-    </nav>
+  <div class="form-group">
+    <label for="currencySelect">選擇目標外幣</label>
+    <select id="currencySelect" onchange="handleCurrencyChange()">
+      <!-- 動態載入 -->
+    </select>
+  </div>
 
-    <div class="container">
+  <div class="form-group">
+    <label for="rateType">匯率類型</label>
+    <select id="rateType" onchange="calculate()">
+      <option value="cashSelling">現金賣出 (換外幣現鈔最常用)</option>
+      <option value="spotSelling">即期賣出 (網銀/刷卡扣款)</option>
+    </select>
+  </div>
 
-        <!-- 飯店資訊 -->
-        <div id="hotel" class="tab-content active">
-            <h2>飯店資訊</h2>
-            
-            <div class="card">
-                <div class="card-title">前 4 晚：東橫INN 那霸旭橋站前</div>
-                <p><strong>地點：</strong>旭橋站</p>
-                <p><strong>早餐時間：</strong>06:30 - 09:00</p>
-                <p><strong>房間規格：</strong>面積 15 平方公尺，兩張單人床（單床尺寸 110×200cm）</p>
-                <div class="img-container">
-                    <img data-src="hotel1" alt="東橫INN 房間照片" onclick="openLightbox(this.src)">
-                </div>
-            </div>
+  <div class="rate-info" id="rateDisplay">
+    當前適用匯率：--
+  </div>
 
-            <div class="card">
-                <div class="card-title">後 2 晚：沖繩逸之彩飯店</div>
-                <p><strong>地點：</strong>牧志站</p>
-                <p><strong>早餐時間：</strong>07:00 - 10:00</p>
-                <p><strong>房間規格：</strong>面積 20 平方公尺，兩張單人床（單床尺寸 120×200cm）</p>
-                <div class="img-container">
-                    <img data-src="hotel2" alt="逸之彩飯店 房間照片" onclick="openLightbox(this.src)">
-                </div>
-            </div>
-        </div>
+  <div class="form-group">
+    <label for="twdInput">新台幣金額 (TWD)</label>
+    <input type="number" id="twdInput" placeholder="輸入台幣金額" oninput="convertTwdToForeign()">
+  </div>
 
-        <!-- 航班資訊 -->
-        <div id="flight" class="tab-content">
-            <h2>航班與行李規定</h2>
-            
-            <div class="card">
-                <div class="card-title">航班時間</div>
-                <ul>
-                    <li><strong>去程：</strong>16:50 - 19:25 桃園 - 沖繩（華航 CI122）</li>
-                    <li><strong>回程：</strong>11:55 - 12:35 沖繩 - 桃園（華航 CI121）</li>
-                </ul>
-            </div>
+  <div class="form-group">
+    <label for="foreignInput">外幣金額</label>
+    <input type="number" id="foreignInput" placeholder="輸入外幣金額" oninput="convertForeignToTwd()">
+  </div>
 
-            <div class="card">
-                <div class="card-title">行李額度限制</div>
-                <ul>
-                    <li><strong>手提行李：</strong>每人限 7 公斤</li>
-                    <li><strong>托運行李：</strong>每人限 23 公斤</li>
-                </ul>
-            </div>
+  <button class="btn-sync" id="syncBtn" onclick="fetchRates()">更新牌告匯率</button>
+</div>
 
-            <div class="card warning">
-                <div class="card-title">隨身與托運重要規定</div>
-                <ul>
-                    <li><strong>行動電源與鋰電池：</strong>必須隨身手提，航程中全程禁止使用。</li>
-                    <li><strong>液體、膠狀及噴霧類：</strong>
-                        <ul>
-                            <li>手提：每瓶限 100ml 以內，並須全部裝入 1 公升以下透明夾鏈袋。</li>
-                            <li>托運：超過 100ml 一律托運。</li>
-                        </ul>
-                    </li>
-                    <li><strong>銳利物品：</strong>各類剪刀、刀具及金屬指甲剪等嚴禁隨身攜帶，必須托運。</li>
-                </ul>
-            </div>
-        </div>
+<script>
+  let rateData = {}; // 儲存解析後的匯率資料
 
-        <!-- 沖繩地圖 -->
-        <div id="map" class="tab-content">
-            <h2>沖繩地圖</h2>
-            <div class="img-container">
-                <img data-src="day8" alt="沖繩地圖" onclick="openLightbox(this.src)">
-            </div>
-        </div>
+  // 頁面載入時先讀取快取，再連線更新
+  window.addEventListener('DOMContentLoaded', () => {
+    loadCachedRates();
+    fetchRates();
+  });
 
-        <!-- Day 1 -->
-        <div id="day1" class="tab-content">
-            <h2>Day 1 (11/07 六) 抵達沖繩</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>行程內容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>08:57 - 11:28</td>
-                        <td>花蓮到台北（台鐵 407 車次自強 3000）</td>
-                    </tr>
-                    <tr>
-                        <td>16:50 - 19:25</td>
-                        <td>桃園 - 沖繩（華航 CI122）</td>
-                    </tr>
-                    <tr>
-                        <td>20:30</td>
-                        <td>電車至旭橋站，東橫INN 入住</td>
-                    </tr>
-                    <tr>
-                        <td>21:00</td>
-                        <td>晚餐預計吃「Ryukyu Menya Kariyushi Soba 軟骨拉麵」agu豚 拉麵</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="img-container">
-                <img data-src="day1" alt="Day 1 景點照片" onclick="openLightbox(this.src)">
-            </div>
-        </div>
+  async function fetchRates() {
+    const statusEl = document.getElementById('status');
+    const syncBtn = document.getElementById('syncBtn');
+    statusEl.innerText = "正在讀取台銀牌告匯率...";
+    syncBtn.disabled = true;
 
-        <!-- Day 2 -->
-        <div id="day2" class="tab-content">
-            <h2>Day 2 (11/08 日) kkday北部一日遊巴士</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>行程內容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>06:00 - 07:00</td>
-                        <td>東橫INN 吃早餐</td>
-                    </tr>
-                    <tr>
-                        <td>07:50 - 08:00</td>
-                        <td>那霸縣廳前 RYUBO百貨 BLUE SEAL 店鋪前集合（07:50前集合，08:00出發）</td>
-                    </tr>
-                    <tr>
-                        <td>09:20 - 09:50</td>
-                        <td>萬座毛</td>
-                    </tr>
-                    <tr>
-                        <td>10:50 - 11:20</td>
-                        <td>古宇利海洋塔</td>
-                    </tr>
-                    <tr>
-                        <td>11:40 - 15:40</td>
-                        <td>美麗海水族館</td>
-                    </tr>
-                    <tr>
-                        <td>18:45</td>
-                        <td>回到縣廳前</td>
-                    </tr>
-                    <tr>
-                        <td>19:00</td>
-                        <td>晚餐預計吃「金澤壽司 那霸國際通縣廳前店」</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="img-container">
-                <img data-src="day2" alt="Day 2 景點照片" onclick="openLightbox(this.src)">
-            </div>
-        </div>
+    // 使用 CORS Proxy 讀取台銀 CSV 檔案
+    const targetUrl = 'https://rate.bot.com.tw/xrt/flcsv/0/day';
+    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
 
-        <!-- Day 3 -->
-        <div id="day3" class="tab-content">
-            <h2>Day 3 (11/09 一) kkday南部一日遊巴士</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>行程內容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>06:00 - 07:00</td>
-                        <td>東橫INN 吃早餐</td>
-                    </tr>
-                    <tr>
-                        <td>07:20 - 07:50</td>
-                        <td>縣廳前觀光巴士乘降所集合（08:00出發）</td>
-                    </tr>
-                    <tr>
-                        <td>08:50 - 09:30</td>
-                        <td>知念岬公園</td>
-                    </tr>
-                    <tr>
-                        <td>09:50 - 10:40</td>
-                        <td>新原海灘（自費玻璃船）</td>
-                    </tr>
-                    <tr>
-                        <td>11:00 - 13:30</td>
-                        <td>玉泉洞 & 沖繩世界王國村（12:30 有 EISA 太鼓舞）</td>
-                    </tr>
-                    <tr>
-                        <td>14:00 - 15:00</td>
-                        <td>系滿魚市場</td>
-                    </tr>
-                    <tr>
-                        <td>15:10 - 17:20</td>
-                        <td>iias沖繩豐崎購物中心 (DMM水族館) 或 瀨長島 二選一</td>
-                    </tr>
-                    <tr>
-                        <td>17:25 - 17:50</td>
-                        <td>抵達縣廳前觀光巴士乘降所</td>
-                    </tr>
-                    <tr>
-                        <td>18:30</td>
-                        <td>晚餐預計吃「ライブ居酒屋 島唄 DINING 道ジュネー」</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="img-container">
-                <img data-src="day3" alt="Day 3 景點照片" onclick="openLightbox(this.src)">
-            </div>
-        </div>
+    try {
+      const response = await fetch(proxyUrl);
+      if (!response.ok) throw new Error(`HTTP 錯誤: ${response.status}`);
+      
+      const csvText = await response.text();
+      parseCSV(csvText);
 
-        <!-- Day 4 -->
-        <div id="day4" class="tab-content">
-            <h2>Day 4 (11/10 二) 採購與看秀</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>行程內容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>07:00 - 08:00</td>
-                        <td>東橫INN 吃早餐</td>
-                    </tr>
-                    <tr>
-                        <td>10:00 - 18:00</td>
-                        <td>PARCO CITY（購物行程 / 午餐 / 晚餐）</td>
-                    </tr>
-                    <tr>
-                        <td>20:30 - 22:00</td>
-                        <td>Churasun 6現代熱舞秀（帶護照，20:00開放入場，20:20前必須入場，不然票會被賣掉）</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="img-container">
-                <img data-src="day4" alt="Day 4 景點照片" onclick="openLightbox(this.src)">
-            </div>
-        </div>
+      // 寫入 localStorage 快取
+      const cacheObj = {
+        timestamp: new Date().toLocaleString('zh-TW'),
+        data: rateData
+      };
+      localStorage.setItem('bot_exchange_rates', JSON.stringify(cacheObj));
 
-        <!-- Day 5 -->
-        <div id="day5" class="tab-content">
-            <h2>Day 5 (11/11 三) 換飯店 & Klook一日遊巴士</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>行程內容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>07:00 - 08:00</td>
-                        <td>東橫INN 吃早餐</td>
-                    </tr>
-                    <tr>
-                        <td>09:00 - 11:00</td>
-                        <td>東橫INN退房，行李移至逸之彩寄存</td>
-                    </tr>
-                    <tr>
-                        <td>12:10 - 12:30</td>
-                        <td>縣廳前站 Blue Seal 集合（12:10），搭乘 Klook 巴士（12:30）</td>
-                    </tr>
-                    <tr>
-                        <td>12:45 - 13:45</td>
-                        <td>波上宮</td>
-                    </tr>
-                    <tr>
-                        <td>15:00 - 15:40</td>
-                        <td>殘波岬</td>
-                    </tr>
-                    <tr>
-                        <td>16:10 - 18:10</td>
-                        <td>美國村（晚餐預約 16:30「琉球的牛」精緻烤肉）</td>
-                    </tr>
-                    <tr>
-                        <td>18:50 - 20:30</td>
-                        <td>東南植物樂園燈光秀</td>
-                    </tr>
-                    <tr>
-                        <td>21:30</td>
-                        <td>回到縣廳前解散</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="img-container">
-                <img data-src="day5" alt="Day 5 景點照片" onclick="openLightbox(this.src)">
-            </div>
-        </div>
+      statusEl.innerText = `更新成功！(更新時間: ${cacheObj.timestamp})`;
+      populateCurrencyOptions();
+    } catch (err) {
+      console.error(err);
+      statusEl.innerText = "連線失敗，改用離線快取資料。";
+      if (Object.keys(rateData).length === 0) {
+        loadCachedRates();
+      }
+    } finally {
+      syncBtn.disabled = false;
+    }
+  }
 
-        <!-- Day 6 -->
-        <div id="day6" class="tab-content">
-            <h2>Day 6 (11/12 四) 兒童王國與首里城</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>行程內容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>07:00 - 08:00</td>
-                        <td>逸之彩飯店吃早餐</td>
-                    </tr>
-                    <tr>
-                        <td>10:00 - 15:00</td>
-                        <td>沖繩兒童王國</td>
-                    </tr>
-                    <tr>
-                        <td>16:00 - 17:00</td>
-                        <td>首里城或逛平和通</td>
-                    </tr>
-                    <tr>
-                        <td>18:30</td>
-                        <td>晚餐「沖繩民謠ライブ居酒屋 ～奏～國際通り店」</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="img-container">
-                <img data-src="day6" alt="Day 6 景點照片" onclick="openLightbox(this.src)">
-            </div>
-        </div>
+  function parseCSV(text) {
+    const lines = text.split('\n');
+    const newRateData = {};
 
-        <!-- Day 7 -->
-        <div id="day7" class="tab-content">
-            <h2>Day 7 (11/13 五) 返家</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>行程內容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>07:00 - 08:00</td>
-                        <td>逸之彩飯店吃早餐</td>
-                    </tr>
-                    <tr>
-                        <td>08:00 - 08:30</td>
-                        <td>退房，搭 Uber 前往沖繩那霸機場</td>
-                    </tr>
-                    <tr>
-                        <td>11:55 - 12:35</td>
-                        <td>沖繩 - 桃園（華航 CI121）</td>
-                    </tr>
-                    <tr>
-                        <td>15:43 - 18:01</td>
-                        <td>台北 - 花蓮（普悠瑪 236）</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="img-container">
-                <img data-src="day7" alt="Day 7 景點照片" onclick="openLightbox(this.src)">
-            </div>
-        </div>
+    lines.forEach((line, index) => {
+      if (index === 0 || !line.trim()) return; // 略過標頭或空行
+      
+      // 處理 CSV 欄位，去除雙引號與多餘空白
+      const cols = line.split(',').map(c => c.replace(/"/g, '').trim());
+      
+      if (cols.length >= 13) {
+        const nameAndCode = cols[0]; // 例: "日圓 (JPY)"
+        const match = nameAndCode.match(/\(([A-Z]+)\)/);
+        const code = match ? match[1] : null;
 
-        <!-- 旅遊保險 -->
-        <div id="insurance" class="tab-content">
-            <h2>富邦快樂旅平卡 保險內容</h2>
-
-            <div class="card">
-                <div class="card-title">投保基本資訊</div>
-                <p><strong>專案名稱：</strong>新快樂旅平卡_國外300萬_115.04(含法傳)</p>
-                <p><strong>旅遊國家：</strong>日本（沖繩）</p>
-                <p><strong>總投保人數：</strong>2 人</p>
-                <p><strong>總保險費：</strong>1,356 元</p>
-            </div>
-
-            <!-- 第一區塊：平安保險、醫療與責任保險 -->
-            <h3 style="margin-top: 2rem; color: var(--primary-dark); font-size: 1.6rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.4rem;">一、平安保險、醫療與責任救援</h3>
-            <table class="insurance-table">
-                <thead>
-                    <tr>
-                        <th>險種項目</th>
-                        <th>承保範圍</th>
-                        <th>保險金額</th>
-                        <th>自負額</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>T115 富邦產物安心遊個人旅行綜合保險：食品中毒補償保險</td>
-                        <td>每次</td>
-                        <td>6,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>T152 安心遊個人旅行保障保險：海外突發疾病醫療健康保險</td>
-                        <td>每人體傷</td>
-                        <td>300,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>T153 安心遊個人旅行保障保險：旅行平安保險</td>
-                        <td>每人死亡失能</td>
-                        <td>3,000,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>T155 安心遊個人旅行保障保險：傷害醫療費用保險</td>
-                        <td>每人體傷</td>
-                        <td>300,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA28 安心個人旅行綜合保險-甲型：個人責任保險</td>
-                        <td>每一事故最高</td>
-                        <td>1,000,000 元</td>
-                        <td>2,500 元</td>
-                    </tr>
-                    <tr>
-                        <td>TA29 安心個人旅行綜合保險-甲型：緊急救援費用保險</td>
-                        <td>保期內最高</td>
-                        <td>2,000,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA30 安心個人旅行綜合保險-甲型：居家火災臨時住宿補償保險</td>
-                        <td>定額給付</td>
-                        <td>30,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA31 安心個人旅行綜合保險-甲型：居家竊盜損失補償保險</td>
-                        <td>定額給付</td>
-                        <td>20,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA35 安心個人旅行綜合保險-甲型：特定票券取消補償保險</td>
-                        <td>定額給付</td>
-                        <td>1,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA37 安心個人旅行綜合保險-甲型：水陸公共交通工具延誤保險</td>
-                        <td>定額給付</td>
-                        <td>1,000 元</td>
-                        <td>—</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- 第二區塊：海外旅行不便保險 -->
-            <h3 style="margin-top: 2.5rem; color: var(--primary-dark); font-size: 1.6rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.4rem;">二、享樂個人海外旅行不便保險</h3>
-            <table class="insurance-table">
-                <thead>
-                    <tr>
-                        <th>險種項目</th>
-                        <th>承保範圍</th>
-                        <th>保險金額</th>
-                        <th>自負額</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>TA45 享樂個人海外旅行不便保險：旅程取消保險（實支實付）</td>
-                        <td>保期內最高</td>
-                        <td>60,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA46 享樂個人海外旅行不便保險：班機延誤保險（定額給付-累進式）</td>
-                        <td>定額給付／每滿四小時／2倍型／每次最高給付金額</td>
-                        <td>5,000 元 <br>(最高 10,000 元)</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA47 享樂個人海外旅行不便保險：旅程更改保險（實支實付）</td>
-                        <td>保期內最高</td>
-                        <td>60,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA48 享樂個人海外旅行不便保險：行李延誤保險（定額給付）</td>
-                        <td>定額給付</td>
-                        <td>6,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA49 享樂個人海外旅行不便保險：行李損失保險（定額給付）</td>
-                        <td>定額給付</td>
-                        <td>6,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA50 享樂個人海外旅行不便保險：旅行文件損失保險（定額給付）</td>
-                        <td>定額給付</td>
-                        <td>3,000 元</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>TA38 個人旅行綜合保險改降非原定機場費用附加條款</td>
-                        <td>定額給付</td>
-                        <td>5,000 元</td>
-                        <td>—</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 出國必備行李清單分頁 -->
-        <div id="checklist" class="tab-content">
-            <div class="checklist-wrapper">
-                <div class="top-controls">
-                    <div class="font-selector">
-                        <span>字體大小：</span>
-                        <button class="font-btn" onclick="setFontSize('small')">小</button>
-                        <button class="font-btn active" onclick="setFontSize('medium')">中</button>
-                        <button class="font-btn" onclick="setFontSize('large')">大</button>
-                    </div>
-                </div>
-
-                <div class="hero-checklist">
-                    <h3>🎀 出國必備行李清單 🎀</h3>
-                    <p class="subtitle">把要帶的東西整理好，開心出發去旅行吧！✈️💗</p>
-                </div>
-
-                <!-- 可點擊展開/收合各大項進度的整體進度卡片 -->
-                <section class="progress-card" onclick="toggleCatProgress()" aria-label="點擊展開/收合各大項進度">
-                    <div class="progress-top">
-                        <span>🧳 我的整體打包進度</span>
-                        <span id="progressText">0 / 0（0%）</span>
-                    </div>
-                    <div class="progress-track"
-                         role="progressbar"
-                         aria-label="整體打包進度"
-                         aria-valuemin="0"
-                         aria-valuemax="100"
-                         aria-valuenow="0"
-                         id="progressTrack">
-                        <div id="progressBar"></div>
-                    </div>
-                    <div class="toggle-hint" id="toggleHint">▼ 點擊查看各大項詳細進度</div>
-                </section>
-
-                <!-- 各大項準備進度卡片（點擊可滑動跳轉） -->
-                <section class="category-progress-card" id="catProgressCard" aria-label="各大項準備進度">
-                    <div class="cat-progress-title">📊 各大項準備進度（點擊可快速跳轉）</div>
-                    <div class="cat-progress-grid" id="catProgressGrid"></div>
-                </section>
-
-                <div id="checklistContainer" aria-live="polite"></div>
-
-                <p class="footer-note">
-                    ♡ 勾選已打包的物品，隨時確認準備進度 ♡<br>
-                    資料會儲存在這個瀏覽器中，記得不要清除網站資料喔！
-                </p>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Lightbox Modal (圖片點擊彈出) -->
-    <div id="lightbox" class="modal" onclick="closeLightbox()">
-        <span class="modal-close">&times;</span>
-        <img class="modal-content" id="lightbox-img">
-    </div>
-
-    <!-- 行李清單完成時的全螢幕賀詞彈窗 -->
-    <div class="modal-overlay" id="congratsModal" onclick="closeCongratsModal()">
-        <div class="modal-card" onclick="event.stopPropagation()">
-            <h2>🎉 恭喜！</h2>
-            <p>全部都準備好了，可以快樂出發了^^ ✈️💖</p>
-            <button class="modal-close-btn" onclick="closeCongratsModal()">太棒了！</button>
-        </div>
-    </div>
-
-    <script>
-        // ================= 圖片備援機制與分頁切換 =================
-        function loadImageWithFallback(imgElement, baseName) {
-            const folders = ['image/', 'images/'];
-            const exts = ['.jpg', '.png', '.jpeg', ''];
-            
-            let attempts = [];
-            folders.forEach(folder => {
-                exts.forEach(ext => {
-                    attempts.push(folder + baseName + ext);
-                });
-            });
-
-            let currentIndex = 0;
-
-            function tryNext() {
-                if (currentIndex >= attempts.length) {
-                    if (imgElement.parentElement && imgElement.parentElement.classList.contains('img-container')) {
-                        imgElement.parentElement.style.display = 'none';
-                    } else {
-                        imgElement.style.display = 'none';
-                    }
-                    return;
-                }
-
-                const src = attempts[currentIndex++];
-                const tempImg = new Image();
-                tempImg.onload = function() {
-                    imgElement.src = src;
-                };
-                tempImg.onerror = function() {
-                    tryNext();
-                };
-                tempImg.src = src;
-            }
-
-            tryNext();
+        if (code) {
+          newRateData[code] = {
+            name: nameAndCode,
+            cashBuying: parseFloat(cols[2]) || null,   // 現買
+            cashSelling: parseFloat(cols[12]) || null,  // 現賣
+            spotBuying: parseFloat(cols[3]) || null,   // 即買
+            spotSelling: parseFloat(cols[13]) || null  // 即賣
+          };
         }
+      }
+    });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const images = document.querySelectorAll('img[data-src]');
-            images.forEach(img => {
-                const baseName = img.getAttribute('data-src');
-                loadImageWithFallback(img, baseName);
-            });
+    if (Object.keys(newRateData).length > 0) {
+      rateData = newRateData;
+    }
+  }
 
-            // 初始化行李清單
-            loadFontSize();
-            renderChecklist();
+  function loadCachedRates() {
+    const cached = localStorage.getItem('bot_exchange_rates');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        rateData = parsed.data;
+        document.getElementById('status').innerText = `目前為快取資料 (${parsed.timestamp})`;
+        populateCurrencyOptions();
+      } catch (e) {
+        console.error("快取解析失敗", e);
+      }
+    }
+  }
 
-            // 讀取 localStorage 記憶的分頁
-            try {
-                const lastTab = localStorage.getItem('activeOkinawaTab');
-                if (lastTab && document.getElementById(lastTab)) {
-                    switchTab(lastTab);
-                }
-            } catch (e) {
-                console.warn('localStorage access failed:', e);
-            }
-        });
+  function populateCurrencyOptions() {
+    const select = document.getElementById('currencySelect');
+    const savedCurrency = localStorage.getItem('selected_currency') || 'JPY';
+    select.innerHTML = '';
 
-        function switchTab(tabId) {
-            const tabs = document.querySelectorAll('.tab-content');
-            const btns = document.querySelectorAll('.tab-btn');
+    for (const [code, info] of Object.entries(rateData)) {
+      const option = document.createElement('option');
+      option.value = code;
+      option.textContent = `${info.name}`;
+      if (code === savedCurrency) option.selected = true;
+      select.appendChild(option);
+    }
 
-            tabs.forEach(tab => tab.classList.remove('active'));
-            btns.forEach(btn => btn.classList.remove('active'));
+    handleCurrencyChange();
+  }
 
-            const targetTab = document.getElementById(tabId);
-            if (targetTab) {
-                targetTab.classList.add('active');
-            }
+  function handleCurrencyChange() {
+    const code = document.getElementById('currencySelect').value;
+    localStorage.setItem('selected_currency', code);
+    calculate();
+  }
 
-            btns.forEach(btn => {
-                if (btn.getAttribute('onclick').includes("'" + tabId + "'")) {
-                    btn.classList.add('active');
-                }
-            });
+  function getActiveRate() {
+    const code = document.getElementById('currencySelect').value;
+    const type = document.getElementById('rateType').value;
+    if (!rateData[code]) return null;
 
-            try {
-                localStorage.setItem('activeOkinawaTab', tabId);
-            } catch (e) {
-                console.warn('Unable to save active tab to localStorage:', e);
-            }
-        }
+    const rate = rateData[code][type];
+    return rate;
+  }
 
-        function openLightbox(src) {
-            if (!src) return;
-            const modal = document.getElementById('lightbox');
-            const modalImg = document.getElementById('lightbox-img');
-            modal.style.display = 'flex';
-            modalImg.src = src;
-        }
+  function calculate() {
+    const rate = getActiveRate();
+    const rateDisplay = document.getElementById('rateDisplay');
 
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
-        }
+    if (!rate) {
+      rateDisplay.innerText = "當前適用匯率：暫無此資料";
+      return;
+    }
 
-        // ================= 出國必備行李清單邏輯 =================
-        const CHECKLIST_STORAGE_KEY = 'travel_checklist_v5';
-        const FONT_STORAGE_KEY = 'travel_checklist_font';
+    rateDisplay.innerText = `當前適用匯率：1 外幣 = ${rate} TWD`;
+    
+    // 若已有輸入金額，重新換算
+    const twd = document.getElementById('twdInput').value;
+    if (twd) convertTwdToForeign();
+  }
 
-        const defaultChecklistData = [
-            // 1. 隨身證件
-            { category: '隨身證件', name: '護照', packed: false },
-            { category: '隨身證件', name: 'VJW QRCode', packed: false },
-            { category: '隨身證件', name: '身分證', packed: false },
-            { category: '隨身證件', name: '健保卡', packed: false },
-            { category: '隨身證件', name: '信用卡 / 提款卡', packed: false },
-            { category: '隨身證件', name: '日幣 / 台幣', packed: false },
-            { category: '隨身證件', name: '悠遊卡', packed: false },
-            { category: '隨身證件', name: '火車票', packed: false },
-            { category: '隨身證件', name: '手機', packed: false },
+  function convertTwdToForeign() {
+    const rate = getActiveRate();
+    const twd = parseFloat(document.getElementById('twdInput').value);
+    if (!rate || isNaN(twd)) {
+      document.getElementById('foreignInput').value = '';
+      return;
+    }
+    document.getElementById('foreignInput').value = (twd / rate).toFixed(2);
+  }
 
-            // 2. 衣物穿搭
-            { category: '衣物穿搭', name: '衣服', packed: false },
-            { category: '衣物穿搭', name: '褲子', packed: false },
-            { category: '衣物穿搭', name: '內衣 / 內褲', packed: false },
-            { category: '衣物穿搭', name: '外套', packed: false },
-            { category: '衣物穿搭', name: '襪子', packed: false },
-            { category: '衣物穿搭', name: '圍巾', packed: false },
-            { category: '衣物穿搭', name: '皮帶', packed: false },
-            { category: '衣物穿搭', name: '帽子', packed: false },
+  function convertForeignToTwd() {
+    const rate = getActiveRate();
+    const foreign = parseFloat(document.getElementById('foreignInput').value);
+    if (!rate || isNaN(foreign)) {
+      document.getElementById('twdInput').value = '';
+      return;
+    }
+    document.getElementById('twdInput').value = Math.round(foreign * rate);
+  }
+</script>
 
-            // 3. 3C 電器
-            { category: '3C 電器', name: '行動電源', packed: false },
-            { category: '3C 電器', name: '藍牙耳機', packed: false },
-            { category: '3C 電器', name: '充電線', packed: false },
-            { category: '3C 電器', name: '充電器', packed: false },
-            { category: '3C 電器', name: '手機架', packed: false },
-            { category: '3C 電器', name: '自拍棒', packed: false },
-
-            // 4. 日常用品
-            { category: '日常用品', name: '雨傘', packed: false },
-            { category: '日常用品', name: '筆', packed: false },
-            { category: '日常用品', name: '衛生紙/濕紙巾/酒精棉片', packed: false },
-            { category: '日常用品', name: '梳子', packed: false },
-            { category: '日常用品', name: '牙刷 / 牙膏 / 牙線', packed: false },
-            { category: '日常用品', name: '毛巾', packed: false },
-            { category: '日常用品', name: '衛生棉 / 護墊', packed: false },
-            { category: '日常用品', name: '橡皮筋 / 髮夾 / 髮圈', packed: false },
-            { category: '日常用品', name: '指甲刀 / 小剪刀', packed: false },
-            { category: '日常用品', name: '藥', packed: false },
-            { category: '日常用品', name: '痘痘貼 / 保養品 / 防曬', packed: false },
-            { category: '日常用品', name: '口罩', packed: false },
-            { category: '日常用品', name: '室內拖鞋', packed: false },
-            { category: '日常用品', name: '垃圾袋', packed: false }
-        ];
-
-        const checklistCategories = [
-            '隨身證件',
-            '衣物穿搭',
-            '3C 電器',
-            '日常用品'
-        ];
-
-        const checklistIcons = {
-            '隨身證件': '🪪',
-            '衣物穿搭': '👗',
-            '3C 電器': '🎧',
-            '日常用品': '🧴'
-        };
-
-        function loadChecklistItems() {
-            try {
-                const saved = localStorage.getItem(CHECKLIST_STORAGE_KEY);
-                if (!saved) return defaultChecklistData.map(item => ({ ...item }));
-                const parsed = JSON.parse(saved);
-                if (!Array.isArray(parsed)) return defaultChecklistData.map(item => ({ ...item }));
-                return parsed;
-            } catch (error) {
-                return defaultChecklistData.map(item => ({ ...item }));
-            }
-        }
-
-        let checklistItems = loadChecklistItems();
-        let modalShownThisSession = false;
-
-        function saveChecklistItems() {
-            try {
-                localStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify(checklistItems));
-                renderChecklist();
-                return true;
-            } catch (error) {
-                alert('目前無法儲存資料。');
-                renderChecklist();
-                return false;
-            }
-        }
-
-        function escapeHTML(value) {
-            return String(value).replace(/[&<>"']/g, char => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            }[char]));
-        }
-
-        function toggleCatProgress() {
-            const card = document.getElementById('catProgressCard');
-            const hint = document.getElementById('toggleHint');
-            const isOpen = card.classList.toggle('open');
-            hint.textContent = isOpen ? '▲ 點擊收合各大項詳細進度' : '▼ 點擊查看各大項詳細進度';
-        }
-
-        function scrollToCategory(catId) {
-            const target = document.getElementById(`cat-sec-${catId}`);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
-        function setFontSize(size) {
-            document.body.className = `font-${size}`;
-            document.querySelectorAll('.font-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent === (size === 'small' ? '小' : size === 'medium' ? '中' : '大'));
-            });
-            localStorage.setItem(FONT_STORAGE_KEY, size);
-        }
-
-        function loadFontSize() {
-            const saved = localStorage.getItem(FONT_STORAGE_KEY) || 'medium';
-            setFontSize(saved);
-        }
-
-        function closeCongratsModal() {
-            document.getElementById('congratsModal').classList.remove('show');
-        }
-
-        function updateChecklistProgress(categories) {
-            const packedCount = checklistItems.filter(item => item.packed).length;
-            const total = checklistItems.length;
-            const percent = total ? Math.round((packedCount / total) * 100) : 0;
-
-            document.getElementById('progressText').textContent = `${packedCount} / ${total}（${percent}%）`;
-            document.getElementById('progressBar').style.width = `${percent}%`;
-
-            if (total > 0 && packedCount === total) {
-                if (!modalShownThisSession) {
-                    document.getElementById('congratsModal').classList.add('show');
-                    modalShownThisSession = true;
-                }
-            } else {
-                modalShownThisSession = false;
-                closeCongratsModal();
-            }
-
-            const grid = document.getElementById('catProgressGrid');
-            grid.innerHTML = '';
-
-            categories.forEach(category => {
-                const categoryItems = checklistItems.filter(item => item.category === category);
-                if (!categoryItems.length) return;
-
-                const cPacked = categoryItems.filter(item => item.packed).length;
-                const cTotal = categoryItems.length;
-                const cPercent = cTotal ? Math.round((cPacked / cTotal) * 100) : 0;
-                const icon = checklistIcons[category] || '🌸';
-
-                const itemEl = document.createElement('div');
-                itemEl.className = 'cat-progress-item';
-                itemEl.onclick = () => scrollToCategory(category);
-                itemEl.innerHTML = `
-                    <div class="cat-progress-header">
-                        <span class="cat-progress-name"><span>${icon}</span> ${escapeHTML(category)}</span>
-                        <span class="cat-progress-val">${cPacked}/${cTotal} (${cPercent}%)</span>
-                    </div>
-                    <div class="cat-progress-track">
-                        <div class="cat-progress-fill" style="width: ${cPercent}%"></div>
-                    </div>
-                `;
-                grid.appendChild(itemEl);
-            });
-        }
-
-        function renderChecklist() {
-            const container = document.getElementById('checklistContainer');
-            container.innerHTML = '';
-
-            const categories = [...checklistCategories];
-            checklistItems.forEach(item => {
-                if (!categories.includes(item.category)) categories.push(item.category);
-            });
-
-            categories.forEach(category => {
-                const categoryItems = checklistItems
-                    .map((item, index) => ({ ...item, index }))
-                    .filter(item => item.category === category);
-
-                const categoryIndex = checklistCategories.indexOf(category);
-                const catClass = categoryIndex >= 0 ? `cat-${categoryIndex}` : 'cat-other';
-                const icon = checklistIcons[category] || '🌸';
-
-                const packedCount = categoryItems.filter(item => item.packed).length;
-                const totalCount = categoryItems.length;
-                const isAllPacked = totalCount > 0 && packedCount === totalCount;
-
-                const section = document.createElement('section');
-                section.className = `category-card ${catClass}`;
-                section.id = `cat-sec-${category}`;
-
-                section.innerHTML = `
-                    <div class="category-header">
-                        <div class="cat-title-group">
-                            <span class="cat-emoji">${icon}</span>
-                            <span>${escapeHTML(category)}</span>
-                            <span class="cat-count">${packedCount} / ${totalCount} 已完成</span>
-                        </div>
-                        <div class="cat-actions">
-                            <button class="toggle-cat-btn" onclick="toggleCategoryPacked('${escapeHTML(category)}', ${!isAllPacked})">
-                                ${isAllPacked ? '☐ 取消全選' : '☑ 全選'}
-                            </button>
-                            <button class="add-cat-btn" onclick="addItemToCategory('${escapeHTML(category)}')">＋ 新增</button>
-                        </div>
-                    </div>
-                    <div class="items-list"></div>
-                `;
-
-                const list = section.querySelector('.items-list');
-
-                categoryItems.forEach(item => {
-                    const row = document.createElement('div');
-                    row.className = `item-row${item.packed ? ' packed' : ''}`;
-
-                    row.innerHTML = `
-                        <input
-                            class="item-check"
-                            type="checkbox"
-                            ${item.packed ? 'checked' : ''}
-                            onchange="toggleChecklistItemPacked(${item.index})"
-                        >
-
-                        <span
-                            class="item-name"
-                            onclick="toggleChecklistItemPackedDirect(${item.index})"
-                        >${escapeHTML(item.name)}</span>
-
-                        <button
-                            class="delete-btn"
-                            type="button"
-                            onclick="deleteChecklistItem(${item.index})"
-                        >刪除</button>
-                    `;
-
-                    list.appendChild(row);
-                });
-
-                container.appendChild(section);
-            });
-
-            updateChecklistProgress(categories);
-        }
-
-        function toggleCategoryPacked(categoryName, targetState) {
-            checklistItems.forEach(item => {
-                if (item.category === categoryName) {
-                    item.packed = targetState;
-                }
-            });
-            saveChecklistItems();
-        }
-
-        function addItemToCategory(categoryName) {
-            const name = prompt(`要在「${categoryName}」新增什麼物品？`);
-            if (name && name.trim()) {
-                checklistItems.push({
-                    category: categoryName,
-                    name: name.trim(),
-                    packed: false
-                });
-                saveChecklistItems();
-            }
-        }
-
-        function toggleChecklistItemPacked(index) {
-            if (!checklistItems[index]) return;
-            checklistItems[index].packed = !checklistItems[index].packed;
-            saveChecklistItems();
-        }
-
-        function toggleChecklistItemPackedDirect(index) {
-            if (!checklistItems[index]) return;
-            checklistItems[index].packed = !checklistItems[index].packed;
-            saveChecklistItems();
-        }
-
-        function deleteChecklistItem(index) {
-            if (!checklistItems[index]) return;
-            const name = checklistItems[index].name;
-            if (!confirm(`確定要刪除「${name}」嗎？`)) return;
-
-            checklistItems.splice(index, 1);
-            saveChecklistItems();
-        }
-    </script>
 </body>
 </html>
