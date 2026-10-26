@@ -30,20 +30,21 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
+      padding: 12px;
     }
 
-    /* 頂部匯率設定區 */
+    /* 1. 頂部匯率設定區 (緊湊版) */
     .rate-setting {
       background: #1c1c1e;
-      border-radius: 14px;
-      padding: 12px 18px;
+      border-radius: 12px;
+      padding: 8px 14px;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 600;
       color: #ddd;
+      flex-shrink: 0;
     }
     .rate-item {
       display: flex;
@@ -51,34 +52,36 @@
       gap: 6px;
     }
     .rate-item input {
-      width: 80px;
+      width: 65px;
       background: #2c2c2e;
       border: 1px solid #555;
       color: #fff;
-      border-radius: 8px;
+      border-radius: 6px;
       text-align: right;
-      padding: 4px 6px;
-      font-size: 18px;
+      padding: 3px 5px;
+      font-size: 15px;
       font-weight: bold;
     }
 
-    /* 顯示區域 (大幅放大數字) */
+    /* 2. 顯示區域 (限制高度、防止撐大) */
     .display-area {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 10px 8px;
-      gap: 16px;
+      padding: 8px 4px;
+      gap: 10px;
+      min-height: 0; /* 防止子元素撐開容器 */
     }
     .currency-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 16px;
-      border-radius: 16px;
+      padding: 10px 14px;
+      border-radius: 14px;
       cursor: pointer;
       user-select: none;
+      overflow: hidden;
     }
     .currency-row.active {
       background: #1c1c1e;
@@ -87,39 +90,48 @@
     .currency-tag {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 28px;
+      gap: 6px;
+      font-size: 22px;
       font-weight: 700;
       color: #ff9f0a;
+      flex-shrink: 0;
     }
     .currency-tag.base {
       color: #aaa;
     }
+    /* 動態縮放與不換行 */
     .currency-amount {
-      font-size: 64px; /* 數字再次放大 */
+      font-size: clamp(24px, 8vw, 48px); /* 自動依文字長度動態調整大小 */
       font-weight: 700;
-      word-break: break-all;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       text-align: right;
-      line-height: 1.1;
+      line-height: 1.2;
+      flex: 1;
+      margin-left: 10px;
     }
     .switch-hint {
-      font-size: 14px;
+      font-size: 12px;
       color: #777;
-      margin-left: 4px;
     }
 
-    /* 按鈕區域 (按鈕與字體加大) */
+    /* 3. 按鈕區域 (自適應高度，絕不移出螢幕) */
     .keypad {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      padding-bottom: 10px;
+      grid-template-rows: repeat(4, 1fr);
+      gap: 10px;
+      height: 58%; /* 固定按鈕區域佔總高度的百分比 */
+      flex-shrink: 0;
+      padding-bottom: 4px;
     }
     .btn {
-      height: 80px;
+      width: 100%;
+      height: 100%;
       border: none;
-      border-radius: 20px;
-      font-size: 42px; /* 按鈕數字放大 */
+      border-radius: 16px;
+      font-size: 32px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -138,14 +150,14 @@
     .btn-orange {
       background-color: #ff9f0a;
       color: #ffffff;
-      font-size: 48px; /* 運算符號放大 */
+      font-size: 38px;
     }
   </style>
 </head>
 <body>
 
 <div class="calculator">
-  <!-- 1. 自訂匯率設定列 (日幣預設 0.21) -->
+  <!-- 1. 匯率設定列 -->
   <div class="rate-setting">
     <div class="rate-item">
       <span>日幣:</span>
@@ -157,7 +169,7 @@
     </div>
   </div>
 
-  <!-- 2. 金額顯示區 (點擊外幣該行切換 JPY / CNY) -->
+  <!-- 2. 金額顯示區 -->
   <div class="display-area">
     <!-- 外幣輸入區 -->
     <div class="currency-row active" onclick="switchCurrency()">
@@ -173,7 +185,7 @@
     </div>
   </div>
 
-  <!-- 3. 計算機按鈕區 (右側運算符號依序為 + - × ÷) -->
+  <!-- 3. 按鈕區域 (4x4 佈局) -->
   <div class="keypad">
     <button class="btn btn-dark" onclick="appendInput('7')">7</button>
     <button class="btn btn-dark" onclick="appendInput('8')">8</button>
@@ -210,7 +222,6 @@
   jpyRateInput.addEventListener("input", updateResult);
   cnyRateInput.addEventListener("input", updateResult);
 
-  // 點擊 JPY/CNY 該行切換幣別
   function switchCurrency() {
     currentCurrency = (currentCurrency === "JPY") ? "CNY" : "JPY";
     labelTarget.innerHTML = currentCurrency === "JPY" 
@@ -219,65 +230,8 @@
     updateResult();
   }
 
-  function appendInput(val) {
-    if (currentInput === "0" && !isNaN(val)) {
-      currentInput = val;
-    } else {
-      currentInput += val;
-    }
-    updateDisplay();
-  }
-
-  function backspace() {
-    if (currentInput.length > 1) {
-      currentInput = currentInput.slice(0, -1);
-    } else {
-      currentInput = "0";
-    }
-    updateDisplay();
-  }
-
-  function clearAll() {
-    currentInput = "0";
-    updateDisplay();
-  }
-
-  function updateDisplay() {
-    valTarget.innerText = currentInput;
-    updateResult();
-  }
-
-  function getCalculatedValue() {
-    try {
-      let rawExpression = currentInput.replace(/×/g, '*').replace(/÷/g, '/');
-      let val = Function('"use strict"; return (' + rawExpression + ')')();
-      return isNaN(val) || !isFinite(val) ? 0 : val;
-    } catch (e) {
-      return 0;
-    }
-  }
-
-  function updateResult() {
-    let rawAmount = getCalculatedValue();
-    let rate = currentCurrency === 'JPY' 
-      ? parseFloat(jpyRateInput.value) || 0 
-      : parseFloat(cnyRateInput.value) || 0;
-    
-    let twdAmount = Math.round(rawAmount * rate);
-    valTwd.innerText = twdAmount.toLocaleString();
-  }
-
-  // 實體鍵盤相容
-  document.addEventListener('keydown', (e) => {
-    if (e.key >= '0' && e.key <= '9') appendInput(e.key);
-    if (e.key === '+') appendInput('+');
-    if (e.key === '-') appendInput('-');
-    if (e.key === '*') appendInput('×');
-    if (e.key === '/') appendInput('÷');
-    if (e.key === 'Backspace') backspace();
-    if (e.key === 'Escape' || e.key.toLowerCase() === 'c') clearAll();
-  });
-</script>
-
-</body>
-</html>
+  function adjustFontSize(element) {
+    const len = element.innerText.length;
+    if (len > 14) {
+      element.style.fontSize = "22px";
+    } else if
