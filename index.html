@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>出國必備行李清單 ♡</title>
+  <style>
+    :root {
+      --pink: #ff8fb1;
+      --purple: #a78bfa;
+      --yellow: #ffe08a;
+      --mint: #a7ead5;
+      --blue: #a8d8ff;
+      --ink: #51465f;
+      --muted: #8f849b;
+      --card: rgba(255,255,255,.92);
+      --shadow: 0 8px 24px rgba(126, 91, 148, .12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 22px 14px 40px;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 8%, rgba(255,206,224,.8), transparent 24%),
+        radial-gradient(circle at 94% 12%, rgba(216,204,255,.75), transparent 25%),
+        radial-gradient(circle at 10% 88%, rgba(196,244,229,.7), transparent 25%),
+        linear-gradient(145deg, #fff9fc, #f8f5ff 55%, #f4fffb);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 28px 18px 24px;
+      margin-bottom: 18px;
+      border: 2px solid rgba(255,255,255,.9);
+      border-radius: 30px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before, .hero::after {
+      content: "✦";
+      position: absolute;
+      color: #ffb4cf;
+      font-size: 28px;
+    }
+
+    .hero::before { top: 18px; left: 22px; }
+    .hero::after {
+      right: 22px;
+      bottom: 18px;
+      color: #b9a5ff;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: #e66f9a;
+      font-size: clamp(1.8rem, 6vw, 2.65rem);
+      letter-spacing: 1px;
+      line-height: 1.35;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .progress-card, .category-progress-card, .form-card, .category {
+      background: var(--card);
+      border: 2px solid rgba(255,255,255,.95);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-card {
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+
+    .progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+
+    #progressText { color: #e66f9a; }
+
+    .progress-track {
+      height: 15px;
+      background: #f2eafa;
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid #eadff8;
+    }
+
+    #progressBar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff9fbd, #c4a7ff, #8de0c7);
+      transition: width .25s ease;
+    }
+
+    /* 各大項準備進度樣式 */
+    .category-progress-card {
+      padding: 16px 20px;
+      margin-bottom: 18px;
+    }
+
+    .cat-progress-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin: 0 0 12px;
+      color: #7a63b8;
+    }
+
+    .cat-progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .cat-progress-item {
+      background: #fffafd;
+      border: 1.5px solid #eee4f7;
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+
+    .cat-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .88rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .cat-progress-name {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .cat-progress-val {
+      color: #9d85e8;
+      font-size: .82rem;
+    }
+
+    .cat-progress-track {
+      height: 8px;
+      background: #f0e7fa;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .cat-progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: #c4a7ff;
+      transition: width .25s ease;
+    }
+
+    .form-card {
+      padding: 18px;
+      margin-bottom: 22px;
+    }
+
+    .form-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin: 0 0 14px;
+      color: #8d72d6;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+    }
+
+    input, select, button { font: inherit; }
+
+    input[type="text"], select {
+      width: 100%;
+      min-width: 0;
+      padding: 12px 13px;
+      border: 2px solid #eee4f7;
+      border-radius: 14px;
+      background: #fffafd;
+      color: var(--ink);
+      outline: none;
+    }
+
+    input[type="text"]:focus, select:focus {
+      border-color: #d4b8ff;
+      box-shadow: 0 0 0 3px rgba(196,167,255,.18);
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, filter .15s ease;
+    }
+
+    button:hover {
+      filter: brightness(.98);
+      transform: translateY(-1px);
+    }
+
+    button:active { transform: translateY(0); }
+
+    .add-btn {
+      background: linear-gradient(135deg, #ff9fbd, #ffbdd1);
+      color: #703d56;
+      box-shadow: 0 4px 10px rgba(255,143,177,.22);
+      white-space: nowrap;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0 0 14px;
+    }
+
+    .reset-btn {
+      background: #fff0c7;
+      color: #7d6230;
+      border: 1px solid #ffe3a0;
+      font-size: .95rem;
+    }
+
+    #checklist {
+      display: grid;
+      gap: 18px;
+    }
+
+    .category { overflow: hidden; }
+
+    .category-header {
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+
+    .category-header .cat-emoji { font-size: 1.55rem; }
+
+    .category-header .cat-count {
+      margin-left: auto;
+      font-size: .88rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.7);
+      white-space: nowrap;
+    }
+
+    .cat-0 .category-header { background: #ffe4ee; color: #a64e76; }
+    .cat-1 .category-header { background: #fff0c9; color: #8b6a26; }
+    .cat-2 .category-header { background: #e5ddff; color: #7054b4; }
+    .cat-3 .category-header { background: #d9f7ed; color: #367f6b; }
+    .cat-4 .category-header { background: #dff1ff; color: #3f76a3; }
+    .cat-other .category-header { background: #f0e7ff; color: #7756a5; }
+
+    .items-list { padding: 8px 14px 14px; }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 7px;
+      border-bottom: 1px dashed #eee4f4;
+      min-height: 52px;
+    }
+
+    .item-row:last-child { border-bottom: 0; }
+
+    .item-check {
+      width: 22px;
+      height: 22px;
+      accent-color: #ec83aa;
+      cursor: pointer;
+    }
+
+    .item-name {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      cursor: pointer;
+    }
+
+    .item-row.packed .item-name {
+      color: #a39aaa;
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+    }
+
+    .delete-btn {
+      padding: 7px 11px;
+      border-radius: 10px;
+      color: #bf6281;
+      background: #fff0f5;
+      font-size: .85rem;
+    }
+
+    .empty {
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      text-align: center;
+      color: #9a8ea5;
+      font-size: .9rem;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 620px) {
+      body { padding: 12px 10px 28px; }
+
+      .hero {
+        padding: 25px 12px 22px;
+        border-radius: 24px;
+      }
+
+      .hero::before {
+        top: 10px;
+        left: 12px;
+        font-size: 22px;
+      }
+
+      .hero::after {
+        right: 12px;
+        bottom: 10px;
+        font-size: 22px;
+      }
+
+      .subtitle { font-size: .92rem; }
+
+      .progress-card, .category-progress-card, .form-card {
+        padding: 15px;
+        border-radius: 20px;
+      }
+
+      .cat-progress-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      form { grid-template-columns: 1fr; }
+      .add-btn { width: 100%; }
+
+      .category-header {
+        padding: 13px 14px;
+        font-size: 1.1rem;
+      }
+
+      .items-list { padding: 6px 9px 10px; }
+
+      .item-row {
+        grid-template-columns: 25px minmax(0, 1fr) auto;
+        gap: 8px;
+        padding: 10px 3px;
+      }
+
+      .item-name { font-size: 1rem; }
+
+      .item-check {
+        margin-top: 2px;
+      }
+
+      .category-header .cat-count {
+        font-size: .78rem;
+        padding: 4px 8px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <h1>🎀 出國必備行李清單 🎀</h1>
+      <p class="subtitle">把要帶的東西整理好，開心出發去旅行吧！✈️💗</p>
+    </header>
+
+    <section class="progress-card" aria-label="整體打包進度">
+      <div class="progress-top">
+        <span>🧳 我的整體打包進度</span>
+        <span id="progressText">0 / 0（0%）</span>
+      </div>
+      <div class="progress-track"
+           role="progressbar"
+           aria-label="整體打包進度"
+           aria-valuemin="0"
+           aria-valuemax="100"
+           aria-valuenow="0"
+           id="progressTrack">
+        <div id="progressBar"></div>
+      </div>
+    </section>
+
+    <!-- 新增：各大項準備進度卡片 -->
+    <section class="category-progress-card" aria-label="各大項準備進度">
+      <div class="cat-progress-title">📊 各大項準備進度</div>
+      <div class="cat-progress-grid" id="catProgressGrid"></div>
+    </section>
+
+    <section class="form-card">
+      <h2 class="form-title">✨ 新增行李項目</h2>
+      <form id="addForm">
+        <input
+          type="text"
+          id="itemName"
+          placeholder="輸入物品名稱，例如：護照套"
+          maxlength="120"
+          required
+        >
+        <select id="itemCategory" aria-label="選擇分類">
+          <option value="隨身物品與證件">🪪 隨身物品與證件</option>
+          <option value="衣物穿搭">👗 衣物穿搭</option>
+          <option value="3C 電器">🎧 3C 電器</option>
+          <option value="個人雜物與保養">🧴 個人雜物與保養</option>
+          <option value="日常與收納工具">🧸 日常與收納工具</option>
+        </select>
+        <button class="add-btn" type="submit">＋ 加入清單</button>
+      </form>
+    </section>
+
+    <div class="toolbar">
+      <button class="reset-btn" type="button" onclick="resetPackedStatus()">
+        🌷 重置已備狀態（保留清單）
+      </button>
+    </div>
+
+    <section id="checklist" aria-live="polite"></section>
+
+    <p class="footer-note">
+      ♡ 勾選已打包的物品，隨時確認準備進度 ♡<br>
+      資料會儲存在這個瀏覽器中，記得不要清除網站資料喔！
+    </p>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'travel_checklist';
+
+    const defaultData = [
+      { category: '隨身物品與證件', name: '護照', packed: false },
+      { category: '隨身物品與證件', name: '身分證', packed: false },
+      { category: '隨身物品與證件', name: '機票／電子機票資料', packed: false },
+      { category: '隨身物品與證件', name: '住宿訂房資料', packed: false },
+      { category: '隨身物品與證件', name: '旅遊保險資料', packed: false },
+      { category: '隨身物品與證件', name: '信用卡／金融卡', packed: false },
+      { category: '隨身物品與證件', name: '現金／外幣', packed: false },
+      { category: '隨身物品與證件', name: '緊急聯絡資訊', packed: false },
+
+      { category: '衣物穿搭', name: '上衣', packed: false },
+      { category: '衣物穿搭', name: '褲子／裙子', packed: false },
+      { category: '衣物穿搭', name: '內衣褲', packed: false },
+      { category: '衣物穿搭', name: '襪子', packed: false },
+      { category: '衣物穿搭', name: '睡衣', packed: false },
+      { category: '衣物穿搭', name: '外套／薄外套', packed: false },
+      { category: '衣物穿搭', name: '舒適好走的鞋子', packed: false },
+      { category: '衣物穿搭', name: '髒衣袋', packed: false },
+
+      { category: '3C 電器', name: '手機', packed: false },
+      { category: '3C 電器', name: '手機充電器／充電線', packed: false },
+      { category: '3C 電器', name: '行動電源', packed: false },
+      { category: '3C 電器', name: '轉接插頭／轉接器', packed: false },
+
+      { category: '個人雜物與保養', name: '牙刷', packed: false },
+      { category: '個人雜物與保養', name: '牙膏', packed: false },
+      { category: '個人雜物與保養', name: '洗面乳', packed: false },
+      { category: '個人雜物與保養', name: '保養品／乳液', packed: false },
+      { category: '個人雜物與保養', name: '防曬乳', packed: false },
+      { category: '個人雜物與保養', name: '衛生紙／濕紙巾', packed: false },
+      { category: '個人雜物與保養', name: '常備藥品／個人藥物', packed: false },
+
+      { category: '日常與收納工具', name: '行李箱／旅行袋', packed: false },
+      { category: '日常與收納工具', name: '隨身小包', packed: false },
+      { category: '日常與收納工具', name: '收納袋／分裝袋', packed: false }
+    ];
+
+    const categoryOrder = [
+      '隨身物品與證件',
+      '衣物穿搭',
+      '3C 電器',
+      '個人雜物與保養',
+      '日常與收納工具'
+    ];
+
+    const categoryIcons = {
+      '隨身物品與證件': '🪪',
+      '衣物穿搭': '👗',
+      '3C 電器': '🎧',
+      '個人雜物與保養': '🧴',
+      '日常與收納工具': '🧸'
+    };
+
+    function loadItems() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if (!saved) {
+          return defaultData.map(item => ({ ...item }));
+        }
+
+        const parsed = JSON.parse(saved);
+
+        if (!Array.isArray(parsed)) {
+          throw new Error('清單資料格式不正確');
+        }
+
+        return parsed.map(item => ({
+          category: String(item.category || '日常與收納工具'),
+          name: String(item.name || ''),
+          packed: item.packed === true
+        }));
+      } catch (error) {
+        alert('讀取已儲存清單時發生問題，將先顯示預設清單。');
+        return defaultData.map(item => ({ ...item }));
+      }
+    }
+
+    let items = loadItems();
+
+    function saveItems() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        renderList();
+        return true;
+      } catch (error) {
+        alert('目前無法儲存資料。請確認瀏覽器允許此檔案使用本機儲存空間。');
+        renderList();
+        return false;
+      }
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char]));
+    }
+
+    function updateProgress(categories) {
+      // 1. 計算總進度
+      const packedCount = items.filter(item => item.packed).length;
+      const total = items.length;
+      const percent = total ? Math.round((packedCount / total) * 100) : 0;
+
+      document.getElementById('progressText').textContent =
+        `${packedCount} / ${total}（${percent}%）`;
+
+      document.getElementById('progressBar').style.width = `${percent}%`;
+      document.getElementById('progressTrack').setAttribute('aria-valuenow', percent);
+
+      // 2. 計算與渲染各大項進度卡片
+      const grid = document.getElementById('catProgressGrid');
+      grid.innerHTML = '';
+
+      categories.forEach(category => {
+        const categoryItems = items.filter(item => item.category === category);
+        if (!categoryItems.length) return;
+
+        const cPacked = categoryItems.filter(item => item.packed).length;
+        const cTotal = categoryItems.length;
+        const cPercent = cTotal ? Math.round((cPacked / cTotal) * 100) : 0;
+        const icon = categoryIcons[category] || '🌸';
+
+        const itemEl = document.createElement('div');
+        itemEl.className = 'cat-progress-item';
+        itemEl.innerHTML = `
+          <div class="cat-progress-header">
+            <span class="cat-progress-name"><span>${icon}</span> ${escapeHTML(category)}</span>
+            <span class="cat-progress-val">${cPacked}/${cTotal} (${cPercent}%)</span>
+          </div>
+          <div class="cat-progress-track">
+            <div class="cat-progress-fill" style="width: ${cPercent}%"></div>
+          </div>
+        `;
+        grid.appendChild(itemEl);
+      });
+    }
+
+    function renderList() {
+      const checklist = document.getElementById('checklist');
+      checklist.innerHTML = '';
+
+      const categories = [...categoryOrder];
+
+      items.forEach(item => {
+        if (!categories.includes(item.category)) {
+          categories.push(item.category);
+        }
+      });
+
+      categories.forEach(category => {
+        const categoryItems = items
+          .map((item, index) => ({ ...item, index }))
+          .filter(item => item.category === category);
+
+        if (!categoryItems.length) return;
+
+        const categoryIndex = categoryOrder.indexOf(category);
+        const catClass = categoryIndex >= 0 ? `cat-${categoryIndex}` : 'cat-other';
+        const icon = categoryIcons[category] || '🌸';
+
+        const packedCount = categoryItems.filter(item => item.packed).length;
+        const totalCount = categoryItems.length;
+
+        const section = document.createElement('section');
+        section.className = `category ${catClass}`;
+
+        section.innerHTML = `
+          <div class="category-header">
+            <span class="cat-emoji">${icon}</span>
+            <span>${escapeHTML(category)}</span>
+            <span class="cat-count">${packedCount} / ${totalCount} 已完成</span>
+          </div>
+          <div class="items-list"></div>
+        `;
+
+        const list = section.querySelector('.items-list');
+
+        categoryItems.forEach(item => {
+          const row = document.createElement('div');
+          row.className = `item-row${item.packed ? ' packed' : ''}`;
+
+          row.innerHTML = `
+            <input
+              class="item-check"
+              type="checkbox"
+              aria-label="已打包：${escapeHTML(item.name)}"
+              ${item.packed ? 'checked' : ''}
+              onchange="togglePacked(${item.index})"
+            >
+
+            <span
+              class="item-name"
+              onclick="togglePackedDirect(${item.index})"
+            >${escapeHTML(item.name)}</span>
+
+            <button
+              class="delete-btn"
+              type="button"
+              onclick="deleteItem(${item.index})"
+              aria-label="刪除 ${escapeHTML(item.name)}"
+            >刪除</button>
+          `;
+
+          list.appendChild(row);
+        });
+
+        checklist.appendChild(section);
+      });
+
+      if (!checklist.children.length) {
+        checklist.innerHTML =
+          '<div class="empty">清單目前是空的，新增一項行李開始整理吧！🌷</div>';
+      }
+
+      updateProgress(categories);
+    }
+
+    function togglePacked(index) {
+      if (!items[index]) return;
+      items[index].packed = !items[index].packed;
+      saveItems();
+    }
+
+    function togglePackedDirect(index) {
+      if (!items[index]) return;
+      items[index].packed = !items[index].packed;
+      saveItems();
+    }
+
+    function deleteItem(index) {
+      if (!items[index]) return;
+      const name = items[index].name;
+      if (!confirm(`確定要刪除「${name}」嗎？`)) return;
+
+      items.splice(index, 1);
+      saveItems();
+    }
+
+    function resetPackedStatus() {
+      if (!confirm('確定要重置所有「已打包」狀態嗎？清單內容會保留。')) {
+        return;
+      }
+
+      items = items.map(item => ({ ...item, packed: false }));
+      saveItems();
+    }
+
+    document.getElementById('addForm').addEventListener('submit', event => {
+      event.preventDefault();
+
+      const nameInput = document.getElementById('itemName');
+      const categoryInput = document.getElementById('itemCategory');
+      const name = nameInput.value.trim();
+
+      if (!name) {
+        nameInput.focus();
+        return;
+      }
+
+      items.push({
+        category: categoryInput.value,
+        name,
+        packed: false
+      });
+
+      if (saveItems()) {
+        nameInput.value = '';
+        nameInput.focus();
+      }
+    });
+
+    renderList();
+  </script>
+</body>
+</html>
