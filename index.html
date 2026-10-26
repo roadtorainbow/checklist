@@ -15,6 +15,25 @@
       --muted: #8f849b;
       --card: rgba(255,255,255,.92);
       --shadow: 0 8px 24px rgba(126, 91, 148, .12);
+      
+      /* 字級變數（預設：中） */
+      --font-base: 1.15rem;
+      --font-title: 1.4rem;
+      --font-hero: clamp(1.8rem, 6vw, 2.65rem);
+    }
+
+    /* 字體大小切換 */
+    body.font-small {
+      --font-base: 0.95rem;
+      --font-title: 1.15rem;
+    }
+    body.font-medium {
+      --font-base: 1.15rem;
+      --font-title: 1.4rem;
+    }
+    body.font-large {
+      --font-base: 1.35rem;
+      --font-title: 1.6rem;
     }
 
     * { box-sizing: border-box; }
@@ -37,9 +56,43 @@
       margin: 0 auto;
     }
 
+    .top-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .font-selector {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card);
+      padding: 6px 12px;
+      border-radius: 99px;
+      box-shadow: var(--shadow);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .font-btn {
+      border: none;
+      background: transparent;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .font-btn.active {
+      background: #c4a7ff;
+      color: white;
+    }
+
     .hero {
       text-align: center;
-      padding: 28px 18px 24px;
+      padding: 24px 18px 20px;
       margin-bottom: 18px;
       border: 2px solid rgba(255,255,255,.9);
       border-radius: 30px;
@@ -57,16 +110,12 @@
     }
 
     .hero::before { top: 18px; left: 22px; }
-    .hero::after {
-      right: 22px;
-      bottom: 18px;
-      color: #b9a5ff;
-    }
+    .hero::after { right: 22px; bottom: 18px; color: #b9a5ff; }
 
     h1 {
       margin: 0 0 8px;
       color: #e66f9a;
-      font-size: clamp(1.8rem, 6vw, 2.65rem);
+      font-size: var(--font-hero);
       letter-spacing: 1px;
       line-height: 1.35;
     }
@@ -77,7 +126,7 @@
       font-size: 1rem;
     }
 
-    .progress-card, .category-progress-card, .form-card, .category {
+    .progress-card, .category-progress-card, .category {
       background: var(--card);
       border: 2px solid rgba(255,255,255,.95);
       border-radius: 24px;
@@ -87,6 +136,13 @@
     .progress-card {
       padding: 18px 20px;
       margin-bottom: 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .15s ease;
+    }
+
+    .progress-card:hover {
+      transform: translateY(-2px);
     }
 
     .progress-top {
@@ -96,13 +152,13 @@
       gap: 12px;
       margin-bottom: 10px;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: var(--font-base);
     }
 
     #progressText { color: #e66f9a; }
 
     .progress-track {
-      height: 15px;
+      height: 16px;
       background: #f2eafa;
       border-radius: 99px;
       overflow: hidden;
@@ -117,13 +173,27 @@
       transition: width .25s ease;
     }
 
+    .toggle-hint {
+      text-align: right;
+      font-size: 0.8rem;
+      color: #a78bfa;
+      margin-top: 6px;
+      font-weight: 700;
+    }
+
+    /* 各大項準備進度卡片 */
     .category-progress-card {
       padding: 16px 20px;
       margin-bottom: 18px;
+      display: none; /* 預設收合 */
+    }
+
+    .category-progress-card.open {
+      display: block;
     }
 
     .cat-progress-title {
-      font-size: 1.05rem;
+      font-size: var(--font-base);
       font-weight: 800;
       margin: 0 0 12px;
       color: #7a63b8;
@@ -131,7 +201,7 @@
 
     .cat-progress-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 10px;
     }
 
@@ -146,7 +216,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: .88rem;
+      font-size: calc(var(--font-base) * 0.85);
       font-weight: 700;
       margin-bottom: 6px;
     }
@@ -162,7 +232,6 @@
 
     .cat-progress-val {
       color: #9d85e8;
-      font-size: .82rem;
     }
 
     .cat-progress-track {
@@ -180,76 +249,30 @@
       transition: width .25s ease;
     }
 
-    .form-card {
-      padding: 18px;
-      margin-bottom: 22px;
-    }
-
-    .form-title {
-      font-size: 1.15rem;
-      font-weight: 900;
-      margin: 0 0 14px;
-      color: #8d72d6;
-    }
-
-    form {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 10px;
-    }
-
-    input, select, button { font: inherit; }
-
-    input[type="text"], select {
-      width: 100%;
-      min-width: 0;
-      padding: 12px 13px;
-      border: 2px solid #eee4f7;
-      border-radius: 14px;
-      background: #fffafd;
-      color: var(--ink);
-      outline: none;
-    }
-
-    input[type="text"]:focus, select:focus {
-      border-color: #d4b8ff;
-      box-shadow: 0 0 0 3px rgba(196,167,255,.18);
-    }
-
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform .15s ease, filter .15s ease;
-    }
-
-    button:hover {
-      filter: brightness(.98);
-      transform: translateY(-1px);
-    }
-
-    button:active { transform: translateY(0); }
-
-    .add-btn {
-      background: linear-gradient(135deg, #ff9fbd, #ffbdd1);
-      color: #703d56;
-      box-shadow: 0 4px 10px rgba(255,143,177,.22);
-      white-space: nowrap;
-    }
-
     .toolbar {
       display: flex;
       justify-content: flex-end;
       margin: 0 0 14px;
     }
 
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 8px 14px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: var(--font-base);
+      transition: transform .15s ease, filter .15s ease;
+    }
+
+    button:hover { filter: brightness(.98); transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
     .reset-btn {
       background: #fff0c7;
       color: #7d6230;
       border: 1px solid #ffe3a0;
-      font-size: .95rem;
+      font-size: 0.9rem;
     }
 
     #checklist {
@@ -264,15 +287,14 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.25rem;
+      font-size: var(--font-title);
       font-weight: 900;
     }
 
-    .category-header .cat-emoji { font-size: 1.55rem; }
+    .category-header .cat-emoji { font-size: 1.4em; }
 
     .category-header .cat-count {
-      margin-left: auto;
-      font-size: .88rem;
+      font-size: 0.85rem;
       font-weight: 800;
       padding: 4px 10px;
       border-radius: 99px;
@@ -280,11 +302,20 @@
       white-space: nowrap;
     }
 
+    .add-cat-btn {
+      margin-left: auto;
+      background: rgba(255,255,255,.85);
+      color: inherit;
+      border: 1.5px solid currentColor;
+      padding: 5px 12px;
+      font-size: 0.85rem;
+      border-radius: 12px;
+    }
+
     .cat-0 .category-header { background: #ffe4ee; color: #a64e76; }
     .cat-1 .category-header { background: #fff0c9; color: #8b6a26; }
     .cat-2 .category-header { background: #e5ddff; color: #7054b4; }
     .cat-3 .category-header { background: #d9f7ed; color: #367f6b; }
-    .cat-other .category-header { background: #f0e7ff; color: #7756a5; }
 
     .items-list { padding: 8px 14px 14px; }
 
@@ -292,7 +323,7 @@
       display: grid;
       grid-template-columns: 28px minmax(0, 1fr) auto;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       padding: 12px 7px;
       border-bottom: 1px dashed #eee4f4;
       min-height: 52px;
@@ -301,14 +332,14 @@
     .item-row:last-child { border-bottom: 0; }
 
     .item-check {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       accent-color: #ec83aa;
       cursor: pointer;
     }
 
     .item-name {
-      font-size: 1.05rem;
+      font-size: var(--font-base);
       line-height: 1.5;
       overflow-wrap: anywhere;
       cursor: pointer;
@@ -321,17 +352,11 @@
     }
 
     .delete-btn {
-      padding: 7px 11px;
+      padding: 6px 10px;
       border-radius: 10px;
       color: #bf6281;
       background: #fff0f5;
-      font-size: .85rem;
-    }
-
-    .empty {
-      padding: 18px;
-      color: var(--muted);
-      text-align: center;
+      font-size: 0.85rem;
     }
 
     .footer-note {
@@ -344,76 +369,30 @@
 
     @media (max-width: 620px) {
       body { padding: 12px 10px 28px; }
-
-      .hero {
-        padding: 25px 12px 22px;
-        border-radius: 24px;
-      }
-
-      .hero::before {
-        top: 10px;
-        left: 12px;
-        font-size: 22px;
-      }
-
-      .hero::after {
-        right: 12px;
-        bottom: 10px;
-        font-size: 22px;
-      }
-
-      .subtitle { font-size: .92rem; }
-
-      .progress-card, .category-progress-card, .form-card {
-        padding: 15px;
-        border-radius: 20px;
-      }
-
-      .cat-progress-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      form { grid-template-columns: 1fr; }
-      .add-btn { width: 100%; }
-
-      .category-header {
-        padding: 13px 14px;
-        font-size: 1.1rem;
-      }
-
-      .items-list { padding: 6px 9px 10px; }
-
-      .item-row {
-        grid-template-columns: 25px minmax(0, 1fr) auto;
-        gap: 8px;
-        padding: 10px 3px;
-      }
-
-      .item-name { font-size: 1rem; }
-
-      .item-check {
-        margin-top: 2px;
-      }
-
-      .category-header .cat-count {
-        font-size: .78rem;
-        padding: 4px 8px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { transition: none !important; }
+      .category-header { padding: 12px 14px; }
+      .category-header .cat-count { display: none; } /* 手機端省空間隱藏數字 */
     }
   </style>
 </head>
-<body>
+<body class="font-medium">
   <main class="container">
+    <div class="top-controls">
+      <div></div>
+      <div class="font-selector">
+        <span>字體大小：</span>
+        <button class="font-btn" onclick="setFontSize('small')">小</button>
+        <button class="font-btn active" onclick="setFontSize('medium')">中</button>
+        <button class="font-btn" onclick="setFontSize('large')">大</button>
+      </div>
+    </div>
+
     <header class="hero">
       <h1>🎀 出國必備行李清單 🎀</h1>
       <p class="subtitle">把要帶的東西整理好，開心出發去旅行吧！✈️💗</p>
     </header>
 
-    <section class="progress-card" aria-label="整體打包進度">
+    <!-- 可點擊展開/收合各大項進度的整體進度卡片 -->
+    <section class="progress-card" onclick="toggleCatProgress()" aria-label="點擊展開/收合各大項進度">
       <div class="progress-top">
         <span>🧳 我的整體打包進度</span>
         <span id="progressText">0 / 0（0%）</span>
@@ -427,32 +406,13 @@
            id="progressTrack">
         <div id="progressBar"></div>
       </div>
+      <div class="toggle-hint" id="toggleHint">▼ 點擊查看各大項詳細進度</div>
     </section>
 
-    <!-- 各大項準備進度卡片 -->
-    <section class="category-progress-card" aria-label="各大項準備進度">
+    <!-- 各大項準備進度卡片（預設收合） -->
+    <section class="category-progress-card" id="catProgressCard" aria-label="各大項準備進度">
       <div class="cat-progress-title">📊 各大項準備進度</div>
       <div class="cat-progress-grid" id="catProgressGrid"></div>
-    </section>
-
-    <section class="form-card">
-      <h2 class="form-title">✨ 新增行李項目</h2>
-      <form id="addForm">
-        <input
-          type="text"
-          id="itemName"
-          placeholder="輸入物品名稱，例如：護照套"
-          maxlength="120"
-          required
-        >
-        <select id="itemCategory" aria-label="選擇分類">
-          <option value="隨身物品與證件">🪪 隨身物品與證件</option>
-          <option value="衣物穿搭">👗 衣物穿搭</option>
-          <option value="3C 電器">🎧 3C 電器</option>
-          <option value="個人保養與日常工具">🧴 個人保養與日常工具</option>
-        </select>
-        <button class="add-btn" type="submit">＋ 加入清單</button>
-      </form>
     </section>
 
     <div class="toolbar">
@@ -470,37 +430,35 @@
   </main>
 
   <script>
-    const STORAGE_KEY = 'travel_checklist_full_v1';
+    const STORAGE_KEY = 'travel_checklist_v2';
+    const FONT_STORAGE_KEY = 'travel_checklist_font';
 
+    // 精確調整後的預設清單
     const defaultData = [
-      // 1. 隨身物品與證件 (13項)
+      // 1. 隨身物品與證件
       { category: '隨身物品與證件', name: '護照', packed: false },
       { category: '隨身物品與證件', name: 'VJW QRCode', packed: false },
       { category: '隨身物品與證件', name: '身分證', packed: false },
       { category: '隨身物品與證件', name: '健保卡', packed: false },
-      { category: '隨身物品與證件', name: '護照用相片', packed: false },
       { category: '隨身物品與證件', name: '信用卡', packed: false },
       { category: '隨身物品與證件', name: '提款卡', packed: false },
+      { category: '隨身物品與證件', name: '悠遊卡', packed: false },
       { category: '隨身物品與證件', name: '日幣', packed: false },
       { category: '隨身物品與證件', name: '台幣', packed: false },
       { category: '隨身物品與證件', name: '台鐵車票', packed: false },
       { category: '隨身物品與證件', name: '手機', packed: false },
-      { category: '隨身物品與證件', name: '手機掛繩', packed: false },
-      { category: '隨身物品與證件', name: '證件套', packed: false },
 
-      // 2. 衣物穿搭 (10項)
+      // 2. 衣物穿搭
       { category: '衣物穿搭', name: '衣服', packed: false },
       { category: '衣物穿搭', name: '褲子', packed: false },
-      { category: '衣物穿搭', name: '內衣', packed: false },
-      { category: '衣物穿搭', name: '內褲', packed: false },
+      { category: '衣物穿搭', name: '內衣 / 內褲', packed: false },
       { category: '衣物穿搭', name: '外套', packed: false },
       { category: '衣物穿搭', name: '襪子', packed: false },
-      { category: '衣物穿搭', name: '褲襪', packed: false },
       { category: '衣物穿搭', name: '圍巾', packed: false },
       { category: '衣物穿搭', name: '皮帶', packed: false },
       { category: '衣物穿搭', name: '帽子', packed: false },
 
-      // 3. 3C 電器 (7項)
+      // 3. 3C 電器
       { category: '3C 電器', name: '行動電源', packed: false },
       { category: '3C 電器', name: '藍牙耳機', packed: false },
       { category: '3C 電器', name: '充電線', packed: false },
@@ -510,31 +468,21 @@
       { category: '3C 電器', name: 'iPad', packed: false },
       { category: '3C 電器', name: '隨身碟', packed: false },
 
-      // 4. 個人保養與日常工具 (31項)
+      // 4. 個人保養與日常工具
       { category: '個人保養與日常工具', name: '雨傘', packed: false },
       { category: '個人保養與日常工具', name: '筆', packed: false },
       { category: '個人保養與日常工具', name: '衛生紙或濕紙巾', packed: false },
-      { category: '個人保養與日常工具', name: '簡便袋子', packed: false },
-      { category: '個人保養與日常工具', name: '杯套', packed: false },
       { category: '個人保養與日常工具', name: '梳子', packed: false },
-      { category: '個人保養與日常工具', name: '牙刷', packed: false },
-      { category: '個人保養與日常工具', name: '牙膏', packed: false },
-      { category: '個人保養與日常工具', name: '牙線', packed: false },
+      { category: '個人保養與日常工具', name: '牙刷 / 牙膏 / 牙線', packed: false },
       { category: '個人保養與日常工具', name: '毛巾', packed: false },
       { category: '個人保養與日常工具', name: '馬桶墊', packed: false },
-      { category: '個人保養與日常工具', name: '衛生棉', packed: false },
-      { category: '個人保養與日常工具', name: '護墊', packed: false },
+      { category: '個人保養與日常工具', name: '衛生棉 / 護墊', packed: false },
       { category: '個人保養與日常工具', name: 'OK繃', packed: false },
-      { category: '個人保養與日常工具', name: '橡皮筋', packed: false },
-      { category: '個人保養與日常工具', name: '髮夾', packed: false },
-      { category: '個人保養與日常工具', name: '髮圈', packed: false },
-      { category: '個人保養與日常工具', name: '指甲刀', packed: false },
-      { category: '個人保養與日常工具', name: '小剪刀', packed: false },
+      { category: '個人保養與日常工具', name: '橡皮筋 / 髮夾 / 髮圈', packed: false },
+      { category: '個人保養與日常工具', name: '指甲刀 / 小剪刀', packed: false },
       { category: '個人保養與日常工具', name: '藥', packed: false },
       { category: '個人保養與日常工具', name: '木瓜霜', packed: false },
-      { category: '個人保養與日常工具', name: '痘痘貼', packed: false },
-      { category: '個人保養與日常工具', name: '保養品', packed: false },
-      { category: '個人保養與日常工具', name: '防曬', packed: false },
+      { category: '個人保養與日常工具', name: '痘痘貼 / 保養品 / 防曬', packed: false },
       { category: '個人保養與日常工具', name: '口罩', packed: false },
       { category: '個人保養與日常工具', name: '扇子', packed: false },
       { category: '個人保養與日常工具', name: '飾品', packed: false },
@@ -542,12 +490,9 @@
       { category: '個人保養與日常工具', name: '酸痛藥布', packed: false },
       { category: '個人保養與日常工具', name: '去污筆', packed: false },
       { category: '個人保養與日常工具', name: '酒精棉片', packed: false },
-      { category: '個人保養與日常工具', name: '洗面乳', packed: false },
       { category: '個人保養與日常工具', name: '室內拖鞋', packed: false },
       { category: '個人保養與日常工具', name: '垃圾袋', packed: false },
-      { category: '個人保養與日常工具', name: '收納行李袋', packed: false },
-      { category: '個人保養與日常工具', name: '洗衣袋', packed: false },
-      { category: '個人保養與日常工具', name: '杯子', packed: false }
+      { category: '個人保養與日常工具', name: '收納行李袋', packed: false }
     ];
 
     const categoryOrder = [
@@ -567,28 +512,10 @@
     function loadItems() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
-
-        if (!saved) {
-          return defaultData.map(item => ({ ...item }));
-        }
-
+        if (!saved) return defaultData.map(item => ({ ...item }));
         const parsed = JSON.parse(saved);
-
-        if (!Array.isArray(parsed)) {
-          throw new Error('清單資料格式不正確');
-        }
-
-        return parsed.map(item => {
-          let category = String(item.category || '個人保養與日常工具');
-          if (category === '個人雜物與保養' || category === '日常與收納工具') {
-            category = '個人保養與日常工具';
-          }
-          return {
-            category,
-            name: String(item.name || ''),
-            packed: item.packed === true
-          };
-        });
+        if (!Array.isArray(parsed)) return defaultData.map(item => ({ ...item }));
+        return parsed;
       } catch (error) {
         return defaultData.map(item => ({ ...item }));
       }
@@ -602,7 +529,7 @@
         renderList();
         return true;
       } catch (error) {
-        alert('目前無法儲存資料。請確認瀏覽器允許此檔案使用本機儲存空間。');
+        alert('目前無法儲存資料。');
         renderList();
         return false;
       }
@@ -610,12 +537,30 @@
 
     function escapeHTML(value) {
       return String(value).replace(/[&<>"']/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       }[char]));
+    }
+
+    /* 各大項進度卡片展開與收合 */
+    function toggleCatProgress() {
+      const card = document.getElementById('catProgressCard');
+      const hint = document.getElementById('toggleHint');
+      const isOpen = card.classList.toggle('open');
+      hint.textContent = isOpen ? '▲ 點擊收合各大項詳細進度' : '▼ 點擊查看各大項詳細進度';
+    }
+
+    /* 字體大小設置 */
+    function setFontSize(size) {
+      document.body.className = `font-${size}`;
+      document.querySelectorAll('.font-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === (size === 'small' ? '小' : size === 'medium' ? '中' : '大'));
+      });
+      localStorage.setItem(FONT_STORAGE_KEY, size);
+    }
+
+    function loadFontSize() {
+      const saved = localStorage.getItem(FONT_STORAGE_KEY) || 'medium';
+      setFontSize(saved);
     }
 
     function updateProgress(categories) {
@@ -623,11 +568,8 @@
       const total = items.length;
       const percent = total ? Math.round((packedCount / total) * 100) : 0;
 
-      document.getElementById('progressText').textContent =
-        `${packedCount} / ${total}（${percent}%）`;
-
+      document.getElementById('progressText').textContent = `${packedCount} / ${total}（${percent}%）`;
       document.getElementById('progressBar').style.width = `${percent}%`;
-      document.getElementById('progressTrack').setAttribute('aria-valuenow', percent);
 
       const grid = document.getElementById('catProgressGrid');
       grid.innerHTML = '';
@@ -661,19 +603,14 @@
       checklist.innerHTML = '';
 
       const categories = [...categoryOrder];
-
       items.forEach(item => {
-        if (!categories.includes(item.category)) {
-          categories.push(item.category);
-        }
+        if (!categories.includes(item.category)) categories.push(item.category);
       });
 
       categories.forEach(category => {
         const categoryItems = items
           .map((item, index) => ({ ...item, index }))
           .filter(item => item.category === category);
-
-        if (!categoryItems.length) return;
 
         const categoryIndex = categoryOrder.indexOf(category);
         const catClass = categoryIndex >= 0 ? `cat-${categoryIndex}` : 'cat-other';
@@ -690,6 +627,7 @@
             <span class="cat-emoji">${icon}</span>
             <span>${escapeHTML(category)}</span>
             <span class="cat-count">${packedCount} / ${totalCount} 已完成</span>
+            <button class="add-cat-btn" onclick="addItemToCategory('${escapeHTML(category)}')">＋ 新增</button>
           </div>
           <div class="items-list"></div>
         `;
@@ -704,7 +642,6 @@
             <input
               class="item-check"
               type="checkbox"
-              aria-label="已打包：${escapeHTML(item.name)}"
               ${item.packed ? 'checked' : ''}
               onchange="togglePacked(${item.index})"
             >
@@ -718,7 +655,6 @@
               class="delete-btn"
               type="button"
               onclick="deleteItem(${item.index})"
-              aria-label="刪除 ${escapeHTML(item.name)}"
             >刪除</button>
           `;
 
@@ -728,12 +664,20 @@
         checklist.appendChild(section);
       });
 
-      if (!checklist.children.length) {
-        checklist.innerHTML =
-          '<div class="empty">清單目前是空的，新增一項行李開始整理吧！🌷</div>';
-      }
-
       updateProgress(categories);
+    }
+
+    /* 單獨在大項新增物品 */
+    function addItemToCategory(categoryName) {
+      const name = prompt(`要在「${categoryName}」新增什麼物品？`);
+      if (name && name.trim()) {
+        items.push({
+          category: categoryName,
+          name: name.trim(),
+          packed: false
+        });
+        saveItems();
+      }
     }
 
     function togglePacked(index) {
@@ -758,38 +702,13 @@
     }
 
     function resetPackedStatus() {
-      if (!confirm('確定要重置所有「已打包」狀態嗎？清單內容會保留。')) {
-        return;
-      }
-
+      if (!confirm('確定要重置所有「已打包」狀態嗎？清單內容會保留。')) return;
       items = items.map(item => ({ ...item, packed: false }));
       saveItems();
     }
 
-    document.getElementById('addForm').addEventListener('submit', event => {
-      event.preventDefault();
-
-      const nameInput = document.getElementById('itemName');
-      const categoryInput = document.getElementById('itemCategory');
-      const name = nameInput.value.trim();
-
-      if (!name) {
-        nameInput.focus();
-        return;
-      }
-
-      items.push({
-        category: categoryInput.value,
-        name,
-        packed: false
-      });
-
-      if (saveItems()) {
-        nameInput.value = '';
-        nameInput.focus();
-      }
-    });
-
+    // 初始化
+    loadFontSize();
     renderList();
   </script>
 </body>
