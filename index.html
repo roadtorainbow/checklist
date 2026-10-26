@@ -14,8 +14,8 @@
     html, body {
       width: 100%;
       height: 100%;
-      overflow: hidden; /* 防止整頁上下滾動 */
-      background-color: #1c1c1e;
+      overflow: hidden;
+      background-color: #000000;
       color: #ffffff;
       display: flex;
       justify-content: center;
@@ -23,61 +23,60 @@
     }
     .calculator {
       width: 100%;
-      max-width: 420px;
+      max-width: 450px;
       height: 100%;
-      max-height: 900px;
       background: #000000;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 12px;
+      padding: 16px;
     }
 
-    /* 頂部匯率設定（收納為簡潔列） */
+    /* 頂部匯率設定區 (加大文字與輸入框) */
     .rate-setting {
       background: #1c1c1e;
-      border-radius: 12px;
-      padding: 8px 12px;
+      border-radius: 14px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: #aaa;
+      gap: 12px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #ddd;
     }
     .rate-item {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
     }
     .rate-item input {
-      width: 60px;
+      width: 75px;
       background: #2c2c2e;
-      border: 1px solid #444;
+      border: 1px solid #555;
       color: #fff;
-      border-radius: 6px;
+      border-radius: 8px;
       text-align: right;
-      padding: 2px 4px;
-      font-size: 13px;
+      padding: 4px 6px;
+      font-size: 16px;
+      font-weight: bold;
     }
 
-    /* 顯示區域 (固定高度) */
+    /* 顯示區域 (大幅放大數字與標籤) */
     .display-area {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 10px 16px;
-      gap: 12px;
+      padding: 10px 8px;
+      gap: 16px;
     }
     .currency-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      cursor: pointer;
-      padding: 6px 10px;
-      border-radius: 10px;
-      transition: background 0.2s;
+      padding: 10px 14px;
+      border-radius: 14px;
     }
     .currency-row.active {
       background: #1c1c1e;
@@ -86,29 +85,34 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 24px;
+      font-weight: 700;
+      color: #ff9f0a;
+    }
+    .currency-tag.base {
+      color: #aaa;
     }
     .currency-amount {
-      font-size: 32px;
-      font-weight: 400;
+      font-size: 44px; /* 金額數字放大 */
+      font-weight: 600;
       word-break: break-all;
       text-align: right;
+      line-height: 1.2;
     }
 
-    /* 按鈕區域 */
+    /* 按鈕區域 (按鈕文字放大) */
     .keypad {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      padding-bottom: 8px;
+      gap: 12px;
+      padding-bottom: 10px;
     }
     .btn {
-      height: 64px;
+      height: 72px; /* 按鈕高度加大 */
       border: none;
-      border-radius: 12px;
-      font-size: 24px;
-      font-weight: 500;
+      border-radius: 16px;
+      font-size: 32px; /* 按鈕符號與數字放大 */
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       justify-content: center;
@@ -117,9 +121,9 @@
       transition: opacity 0.1s;
     }
     .btn:active {
-      opacity: 0.7;
+      opacity: 0.6;
     }
-    /* 深色介面配色 (參考新圖) */
+    /* 配色 */
     .btn-dark {
       background-color: #333333;
       color: #ffffff;
@@ -127,18 +131,19 @@
     .btn-orange {
       background-color: #ff9f0a;
       color: #ffffff;
-      font-size: 28px;
+      font-size: 36px;
     }
     .btn-top {
-      background-color: #444444;
+      background-color: #555555;
       color: #ffffff;
+      font-size: 28px;
     }
   </style>
 </head>
 <body>
 
 <div class="calculator">
-  <!-- 1. 自訂匯率設定列 -->
+  <!-- 1. 自訂匯率設定列 (加大字體) -->
   <div class="rate-setting">
     <div class="rate-item">
       <span>日幣 JPY:</span>
@@ -150,21 +155,21 @@
     </div>
   </div>
 
-  <!-- 2. 金額顯示區 (點擊可切換當前輸入的幣別) -->
+  <!-- 2. 金額顯示區 (大字體) -->
   <div class="display-area">
-    <!-- 主幣別 / 輸入幣別 -->
-    <div class="currency-row active" id="row-target" onclick="toggleCurrencyMode()">
+    <!-- 外幣輸入區 -->
+    <div class="currency-row active" id="row-target">
       <div class="currency-tag" id="label-target">🇯🇵 JPY</div>
       <div class="currency-amount" id="val-target">0</div>
     </div>
-    <!-- 換算後的幣別 (台幣) -->
+    <!-- 台幣結果區 -->
     <div class="currency-row" id="row-base">
-      <div class="currency-tag">🇹🇼 TWD</div>
+      <div class="currency-tag base">🇹🇼 TWD</div>
       <div class="currency-amount" id="val-twd">0</div>
     </div>
   </div>
 
-  <!-- 3. 計算機按鈕區 (依據新圖佈局) -->
+  <!-- 3. 計算機按鈕區 (加大按鈕與數字) -->
   <div class="keypad">
     <button class="btn btn-top" onclick="clearAll()">C</button>
     <button class="btn btn-top" onclick="backspace()">←</button>
@@ -195,7 +200,7 @@
 
 <script>
   let currentInput = "0";
-  let currentCurrency = "JPY"; // 可切換 'JPY' 或 'CNY'
+  let currentCurrency = "JPY";
 
   const valTarget = document.getElementById("val-target");
   const valTwd = document.getElementById("val-twd");
@@ -206,7 +211,6 @@
   jpyRateInput.addEventListener("input", updateResult);
   cnyRateInput.addEventListener("input", updateResult);
 
-  // 切換日幣與人民幣
   function switchCurrency() {
     currentCurrency = (currentCurrency === "JPY") ? "CNY" : "JPY";
     labelTarget.innerText = currentCurrency === "JPY" ? "🇯🇵 JPY" : "🇨🇳 CNY";
@@ -267,7 +271,6 @@
     updateDisplay();
   }
 
-  // 鍵盤相容
   document.addEventListener('keydown', (e) => {
     if ((e.key >= '0' && e.key <= '9') || e.key === '.') appendInput(e.key);
     if (e.key === '+') appendInput('+');
