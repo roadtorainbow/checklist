@@ -132,7 +132,7 @@
 
     .cat-progress-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 10px;
     }
 
@@ -285,7 +285,6 @@
     .cat-1 .category-header { background: #fff0c9; color: #8b6a26; }
     .cat-2 .category-header { background: #e5ddff; color: #7054b4; }
     .cat-3 .category-header { background: #d9f7ed; color: #367f6b; }
-    .cat-4 .category-header { background: #dff1ff; color: #3f76a3; }
     .cat-other .category-header { background: #f0e7ff; color: #7756a5; }
 
     .items-list { padding: 8px 14px 14px; }
@@ -431,7 +430,7 @@
       </div>
     </section>
 
-    <!-- 新增：各大項準備進度卡片 -->
+    <!-- 各大項準備進度卡片 -->
     <section class="category-progress-card" aria-label="各大項準備進度">
       <div class="cat-progress-title">📊 各大項準備進度</div>
       <div class="cat-progress-grid" id="catProgressGrid"></div>
@@ -451,8 +450,7 @@
           <option value="隨身物品與證件">🪪 隨身物品與證件</option>
           <option value="衣物穿搭">👗 衣物穿搭</option>
           <option value="3C 電器">🎧 3C 電器</option>
-          <option value="個人雜物與保養">🧴 個人雜物與保養</option>
-          <option value="日常與收納工具">🧸 日常與收納工具</option>
+          <option value="個人保養與日常工具">🧴 個人保養與日常工具</option>
         </select>
         <button class="add-btn" type="submit">＋ 加入清單</button>
       </form>
@@ -499,33 +497,30 @@
       { category: '3C 電器', name: '行動電源', packed: false },
       { category: '3C 電器', name: '轉接插頭／轉接器', packed: false },
 
-      { category: '個人雜物與保養', name: '牙刷', packed: false },
-      { category: '個人雜物與保養', name: '牙膏', packed: false },
-      { category: '個人雜物與保養', name: '洗面乳', packed: false },
-      { category: '個人雜物與保養', name: '保養品／乳液', packed: false },
-      { category: '個人雜物與保養', name: '防曬乳', packed: false },
-      { category: '個人雜物與保養', name: '衛生紙／濕紙巾', packed: false },
-      { category: '個人雜物與保養', name: '常備藥品／個人藥物', packed: false },
-
-      { category: '日常與收納工具', name: '行李箱／旅行袋', packed: false },
-      { category: '日常與收納工具', name: '隨身小包', packed: false },
-      { category: '日常與收納工具', name: '收納袋／分裝袋', packed: false }
+      { category: '個人保養與日常工具', name: '牙刷', packed: false },
+      { category: '個人保養與日常工具', name: '牙膏', packed: false },
+      { category: '個人保養與日常工具', name: '洗面乳', packed: false },
+      { category: '個人保養與日常工具', name: '保養品／乳液', packed: false },
+      { category: '個人保養與日常工具', name: '防曬乳', packed: false },
+      { category: '個人保養與日常工具', name: '衛生紙／濕紙巾', packed: false },
+      { category: '個人保養與日常工具', name: '常備藥品／個人藥物', packed: false },
+      { category: '個人保養與日常工具', name: '行李箱／旅行袋', packed: false },
+      { category: '個人保養與日常工具', name: '隨身小包', packed: false },
+      { category: '個人保養與日常工具', name: '收納袋／分裝袋', packed: false }
     ];
 
     const categoryOrder = [
       '隨身物品與證件',
       '衣物穿搭',
       '3C 電器',
-      '個人雜物與保養',
-      '日常與收納工具'
+      '個人保養與日常工具'
     ];
 
     const categoryIcons = {
       '隨身物品與證件': '🪪',
       '衣物穿搭': '👗',
       '3C 電器': '🎧',
-      '個人雜物與保養': '🧴',
-      '日常與收納工具': '🧸'
+      '個人保養與日常工具': '🧴'
     };
 
     function loadItems() {
@@ -542,11 +537,18 @@
           throw new Error('清單資料格式不正確');
         }
 
-        return parsed.map(item => ({
-          category: String(item.category || '日常與收納工具'),
-          name: String(item.name || ''),
-          packed: item.packed === true
-        }));
+        return parsed.map(item => {
+          let category = String(item.category || '個人保養與日常工具');
+          // 自動將舊分類轉換合併為新分類
+          if (category === '個人雜物與保養' || category === '日常與收納工具') {
+            category = '個人保養與日常工具';
+          }
+          return {
+            category,
+            name: String(item.name || ''),
+            packed: item.packed === true
+          };
+        });
       } catch (error) {
         alert('讀取已儲存清單時發生問題，將先顯示預設清單。');
         return defaultData.map(item => ({ ...item }));
