@@ -22,6 +22,10 @@
       --font-hero: clamp(1.8rem, 6vw, 2.65rem);
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     /* 字體大小切換 */
     body.font-small {
       --font-base: 0.95rem;
@@ -126,28 +130,67 @@
       font-size: 1rem;
     }
 
-    /* 完成時顯示的快樂提示框 */
-    .congrats-banner {
+    /* 放大版跳出賀詞視窗 (Modal) */
+    .modal-overlay {
       display: none;
-      background: linear-gradient(135deg, #ffb4cf, #c4a7ff);
-      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(81, 70, 95, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 28px;
+      padding: 32px 24px;
       text-align: center;
-      padding: 14px 18px;
-      border-radius: 20px;
-      font-weight: 900;
-      font-size: calc(var(--font-base) * 1.05);
-      margin-bottom: 16px;
-      box-shadow: 0 6px 20px rgba(230, 111, 154, 0.3);
-      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 12px 32px rgba(230, 111, 154, 0.3);
+      border: 3px solid #ffb4cf;
+      animation: modalPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .congrats-banner.show {
-      display: block;
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.8); opacity: 0; }
+    @keyframes modalPop {
+      0% { transform: scale(0.7); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-card h2 {
+      font-size: 2.2rem;
+      color: #e66f9a;
+      margin: 0 0 16px;
+      line-height: 1.4;
+    }
+
+    .modal-card p {
+      font-size: 1.2rem;
+      color: var(--ink);
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+
+    .modal-close-btn {
+      background: linear-gradient(135deg, #ff9fbd, #c4a7ff);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      border-radius: 99px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 143, 177, 0.4);
     }
 
     .progress-card, .category-progress-card, .category {
@@ -234,6 +277,13 @@
       border: 1.5px solid #eee4f7;
       border-radius: 14px;
       padding: 10px 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .cat-progress-item:hover {
+      transform: translateY(-2px);
+      border-color: #c4a7ff;
     }
 
     .cat-progress-header {
@@ -280,10 +330,7 @@
       margin: 0 0 14px;
     }
 
-    .select-all-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .reset-btn {
       background: #fff0c7;
       color: #7d6230;
       border: 1px solid #ffe3a0;
@@ -292,15 +339,7 @@
       font-weight: 800;
       font-size: 0.95rem;
       cursor: pointer;
-      user-select: none;
       box-shadow: 0 2px 6px rgba(255, 227, 160, 0.4);
-    }
-
-    .select-all-label input {
-      width: 18px;
-      height: 18px;
-      accent-color: #e66f9a;
-      cursor: pointer;
     }
 
     button {
@@ -321,7 +360,10 @@
       gap: 18px;
     }
 
-    .category { overflow: hidden; }
+    .category {
+      overflow: hidden;
+      scroll-margin-top: 20px;
+    }
 
     .category-header {
       padding: 15px 18px;
@@ -431,11 +473,6 @@
       <p class="subtitle">把要帶的東西整理好，開心出發去旅行吧！✈️💗</p>
     </header>
 
-    <!-- 全部勾選完成時的祝賀提示 -->
-    <div class="congrats-banner" id="congratsBanner">
-      🎉 恭喜，全部都準備好了，可以快樂出發了^^ ✈️✨
-    </div>
-
     <!-- 可點擊展開/收合各大項進度的整體進度卡片 -->
     <section class="progress-card" onclick="toggleCatProgress()" aria-label="點擊展開/收合各大項進度">
       <div class="progress-top">
@@ -454,17 +491,16 @@
       <div class="toggle-hint" id="toggleHint">▼ 點擊查看各大項詳細進度</div>
     </section>
 
-    <!-- 各大項準備進度卡片（預設收合） -->
+    <!-- 各大項準備進度卡片（點擊可滑動跳轉） -->
     <section class="category-progress-card" id="catProgressCard" aria-label="各大項準備進度">
-      <div class="cat-progress-title">📊 各大項準備進度</div>
+      <div class="cat-progress-title">📊 各大項準備進度（點擊可快速跳轉）</div>
       <div class="cat-progress-grid" id="catProgressGrid"></div>
     </section>
 
     <div class="toolbar">
-      <label class="select-all-label">
-        <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this.checked)">
-        <span>全選所有項目</span>
-      </label>
+      <button class="reset-btn" type="button" onclick="resetPackedStatus()">
+        🌷 一鍵重置
+      </button>
     </div>
 
     <section id="checklist" aria-live="polite"></section>
@@ -475,22 +511,29 @@
     </p>
   </main>
 
+  <!-- 全部完成的全螢幕彈窗 -->
+  <div class="modal-overlay" id="congratsModal" onclick="closeModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <h2>🎉 恭喜！</h2>
+      <p>全部都準備好了，可以快樂出發了^^ ✈️💖</p>
+      <button class="modal-close-btn" onclick="closeModal()">太棒了！</button>
+    </div>
+  </div>
+
   <script>
-    const STORAGE_KEY = 'travel_checklist_v3';
+    const STORAGE_KEY = 'travel_checklist_v4';
     const FONT_STORAGE_KEY = 'travel_checklist_font';
 
-    // 精確調整後的預設清單
+    // 最新調整後的預設清單
     const defaultData = [
       // 1. 隨身證件
       { category: '隨身證件', name: '護照', packed: false },
       { category: '隨身證件', name: 'VJW QRCode', packed: false },
       { category: '隨身證件', name: '身分證', packed: false },
       { category: '隨身證件', name: '健保卡', packed: false },
-      { category: '隨身證件', name: '信用卡', packed: false },
-      { category: '隨身證件', name: '提款卡', packed: false },
+      { category: '隨身證件', name: '信用卡 / 提款卡', packed: false },
+      { category: '隨身證件', name: '日幣 / 台幣', packed: false },
       { category: '隨身證件', name: '悠遊卡', packed: false },
-      { category: '隨身證件', name: '日幣', packed: false },
-      { category: '隨身證件', name: '台幣', packed: false },
       { category: '隨身證件', name: '台鐵車票', packed: false },
       { category: '隨身證件', name: '手機', packed: false },
 
@@ -511,8 +554,6 @@
       { category: '3C 電器', name: '充電器', packed: false },
       { category: '3C 電器', name: '手機架', packed: false },
       { category: '3C 電器', name: '自拍棒', packed: false },
-      { category: '3C 電器', name: 'iPad', packed: false },
-      { category: '3C 電器', name: '隨身碟', packed: false },
 
       // 4. 日常用品
       { category: '日常用品', name: '雨傘', packed: false },
@@ -521,13 +562,11 @@
       { category: '日常用品', name: '梳子', packed: false },
       { category: '日常用品', name: '牙刷 / 牙膏 / 牙線', packed: false },
       { category: '日常用品', name: '毛巾', packed: false },
-      { category: '日常用品', name: '馬桶墊', packed: false },
       { category: '日常用品', name: '衛生棉 / 護墊', packed: false },
       { category: '日常用品', name: 'OK繃', packed: false },
       { category: '日常用品', name: '橡皮筋 / 髮夾 / 髮圈', packed: false },
       { category: '日常用品', name: '指甲刀 / 小剪刀', packed: false },
       { category: '日常用品', name: '藥', packed: false },
-      { category: '日常用品', name: '木瓜霜', packed: false },
       { category: '日常用品', name: '痘痘貼 / 保養品 / 防曬', packed: false },
       { category: '日常用品', name: '口罩', packed: false },
       { category: '日常用品', name: '室內拖鞋', packed: false },
@@ -562,6 +601,7 @@
     }
 
     let items = loadItems();
+    let modalShownThisSession = false; // 避免持續彈出
 
     function saveItems() {
       try {
@@ -589,6 +629,14 @@
       hint.textContent = isOpen ? '▲ 點擊收合各大項詳細進度' : '▼ 點擊查看各大項詳細進度';
     }
 
+    /* 點擊各大項進度，滑動跳轉到指定區域 */
+    function scrollToCategory(catId) {
+      const target = document.getElementById(`cat-sec-${catId}`);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
     /* 字體大小設置 */
     function setFontSize(size) {
       document.body.className = `font-${size}`;
@@ -603,6 +651,10 @@
       setFontSize(saved);
     }
 
+    function closeModal() {
+      document.getElementById('congratsModal').classList.remove('show');
+    }
+
     function updateProgress(categories) {
       const packedCount = items.filter(item => item.packed).length;
       const total = items.length;
@@ -611,20 +663,15 @@
       document.getElementById('progressText').textContent = `${packedCount} / ${total}（${percent}%）`;
       document.getElementById('progressBar').style.width = `${percent}%`;
 
-      // 同步全選勾選框狀態
-      const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-      if (selectAllCheckbox) {
-        selectAllCheckbox.checked = (total > 0 && packedCount === total);
-      }
-
-      // 全部完成時顯示祝賀訊息框
-      const congratsBanner = document.getElementById('congratsBanner');
-      if (congratsBanner) {
-        if (total > 0 && packedCount === total) {
-          congratsBanner.classList.add('show');
-        } else {
-          congratsBanner.classList.remove('show');
+      // 全部完成時彈出全螢幕賀詞
+      if (total > 0 && packedCount === total) {
+        if (!modalShownThisSession) {
+          document.getElementById('congratsModal').classList.add('show');
+          modalShownThisSession = true;
         }
+      } else {
+        modalShownThisSession = false; // 若取消勾選，重置標記
+        closeModal();
       }
 
       const grid = document.getElementById('catProgressGrid');
@@ -641,6 +688,7 @@
 
         const itemEl = document.createElement('div');
         itemEl.className = 'cat-progress-item';
+        itemEl.onclick = () => scrollToCategory(category);
         itemEl.innerHTML = `
           <div class="cat-progress-header">
             <span class="cat-progress-name"><span>${icon}</span> ${escapeHTML(category)}</span>
@@ -677,6 +725,7 @@
 
         const section = document.createElement('section');
         section.className = `category ${catClass}`;
+        section.id = `cat-sec-${category}`; // 設定跳轉識別 ID
 
         section.innerHTML = `
           <div class="category-header">
@@ -723,9 +772,10 @@
       updateProgress(categories);
     }
 
-    /* 全選 / 全取消 功能 */
-    function toggleSelectAll(checked) {
-      items.forEach(item => item.packed = checked);
+    /* 一鍵重置（只重置勾選狀態，保留清單內容） */
+    function resetPackedStatus() {
+      if (!confirm('確定要一鍵重置所有項目的「已完成」狀態嗎？')) return;
+      items = items.map(item => ({ ...item, packed: false }));
       saveItems();
     }
 
