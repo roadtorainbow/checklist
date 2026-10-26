@@ -23,8 +23,9 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Noto Sans TC", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Noto Sans TC", sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
@@ -47,59 +48,34 @@ button, input {
   max-width: 480px;
   height: 100vh;
   height: 100dvh;
-  margin: auto;
-  padding: 12px 14px;
+  margin: 0 auto;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* 頂部標題 */
-.header {
-  flex-shrink: 0;
-  padding: 2px 3px;
-}
-
-.eyebrow {
-  font-size: 11px;
-  letter-spacing: 2.5px;
-  color: var(--orange);
-  font-weight: 800;
-}
-
-h1 {
-  font-size: 25px;
-  margin-top: 3px;
-}
-
-.subtitle {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 3px;
-}
-
-/* 金額顯示區：優先分配空間給金額 */
+/* 金額顯示區：不再顯示頂部標題 */
 .display-area {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 8px 0;
+  gap: 12px;
 }
 
-/* 上下金額卡片 */
+/* 金額卡片 */
 .currency-row {
   flex: 1;
   min-height: 0;
   min-width: 0;
-  padding: 20px 18px;
-  border-radius: 24px;
+  padding: 18px 18px;
+  border-radius: 25px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 12px;
-  border: 1.5px solid #E9D7D0;
+  gap: 10px;
+  border: 2px solid #E9D7D0;
   background: var(--card);
   box-shadow: 0 4px 15px rgba(91, 70, 53, 0.045);
   cursor: pointer;
@@ -108,7 +84,6 @@ h1 {
 
 .currency-row.active {
   border-color: var(--orange);
-  border-width: 2px;
 }
 
 .currency-row.twd {
@@ -132,52 +107,54 @@ h1 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 8px;
   min-width: 0;
 }
 
 .currency-tag {
-  font-size: clamp(15px, 4vw, 19px);
+  font-size: clamp(16px, 4.2vw, 21px);
   font-weight: 800;
   white-space: nowrap;
 }
 
 .hint {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--orange);
   white-space: nowrap;
 }
 
-/* 匯率直接放在幣別旁邊 */
+/* 匯率整合到幣別旁 */
 .rate-control {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   background: #F8F5F1;
   border: 1px solid var(--line);
-  padding: 4px 7px;
-  border-radius: 8px;
+  padding: 5px 8px;
+  border-radius: 9px;
+  flex-shrink: 0;
 }
 
 .rate-control span {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   white-space: nowrap;
 }
 
 .rate-control input {
-  width: 62px;
+  width: 66px;
   min-width: 0;
   border: 0;
   outline: none;
   background: transparent;
   text-align: right;
   color: var(--orange);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
+  padding: 0;
 }
 
-/* 金額：優先維持大字體 */
+/* 大字體金額 */
 .amount {
   display: block;
   width: 100%;
@@ -185,9 +162,9 @@ h1 {
   overflow: hidden;
   white-space: nowrap;
   text-align: right;
-  font-size: clamp(48px, 12vw, 66px);
-  line-height: 1.2;
-  font-weight: 800;
+  font-size: clamp(48px, 13vw, 68px);
+  line-height: 1.15;
+  font-weight: 850;
   letter-spacing: -1px;
   font-variant-numeric: tabular-nums;
 }
@@ -196,48 +173,49 @@ h1 {
   color: #A86F65;
 }
 
-/* 長數字才調整字體，避免超出卡片 */
+/* 只有很長的金額才縮小，優先保留大字體 */
 .amount.long {
-  font-size: clamp(36px, 9vw, 48px);
+  font-size: clamp(40px, 10vw, 52px);
 }
 
 .amount.very-long {
-  font-size: clamp(28px, 7vw, 40px);
+  font-size: clamp(32px, 8vw, 42px);
 }
 
 .amount.extra-long {
-  font-size: clamp(22px, 5.5vw, 30px);
+  font-size: clamp(25px, 6vw, 32px);
 }
 
-/* 數字鍵盤 */
+/* 加大數字按鍵，縮減空白 */
 .keypad {
   flex-shrink: 0;
-  height: 34%;
-  min-height: 210px;
-  max-height: 310px;
+  height: 46%;
+  min-height: 260px;
+  max-height: 440px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(5, minmax(0, 1fr));
-  gap: 8px;
+  gap: 9px;
 }
 
 .btn {
   min-width: 0;
   min-height: 0;
   border: 0;
-  border-radius: 16px;
+  border-radius: 19px;
   background: white;
   color: var(--text);
-  font-size: clamp(24px, 5vh, 34px);
-  font-weight: 650;
-  box-shadow: 0 3px 9px rgba(91, 70, 53, 0.045);
+  font-size: clamp(32px, 6vh, 44px);
+  font-weight: 750;
+  box-shadow: 0 3px 9px rgba(91, 70, 53, 0.06);
   cursor: pointer;
   touch-action: manipulation;
+  transition: transform 0.08s, opacity 0.08s;
 }
 
 .btn:active {
-  transform: scale(.96);
-  opacity: .8;
+  transform: scale(0.95);
+  opacity: 0.8;
 }
 
 .func {
@@ -248,7 +226,7 @@ h1 {
 .op {
   background: #E9B8B5;
   color: #563F3B;
-  font-size: clamp(29px, 5.5vh, 39px);
+  font-size: clamp(36px, 7vh, 48px);
 }
 
 .clear {
@@ -260,41 +238,56 @@ h1 {
   grid-column: span 3;
   background: var(--orange);
   color: white;
-  font-size: 32px;
+  font-size: 42px;
 }
 
-/* 矮螢幕只調整標題與間距，不縮小金額 */
+/* 矮螢幕：保留大按鍵，優先縮小間距 */
 @media (max-height: 680px) {
   .calculator {
-    padding: 7px 12px;
-    gap: 6px;
-  }
-
-  h1 {
-    font-size: 21px;
-  }
-
-  .subtitle {
-    font-size: 11px;
+    padding: 6px 10px;
+    gap: 7px;
   }
 
   .display-area {
-    gap: 8px;
-    padding: 3px 0;
+    gap: 7px;
   }
 
   .currency-row {
-    padding: 12px 14px;
-    gap: 8px;
+    padding: 11px 13px;
+    gap: 6px;
+    border-radius: 19px;
+  }
+
+  .currency-tag {
+    font-size: 15px;
+  }
+
+  .rate-control {
+    padding: 3px 5px;
+  }
+
+  .rate-control input {
+    width: 58px;
+    font-size: 14px;
   }
 
   .keypad {
-    min-height: 185px;
+    height: 46%;
+    min-height: 225px;
     gap: 6px;
   }
 
   .btn {
-    border-radius: 12px;
+    border-radius: 14px;
+    font-size: clamp(29px, 5.5vh, 38px);
+  }
+
+  .op {
+    font-size: clamp(33px, 6vh, 43px);
+  }
+
+  .equals {
+    font-size: 36px;
   }
 }
 </style>
@@ -303,19 +296,15 @@ h1 {
 <body>
 <div class="calculator">
 
-  <header class="header">
-    <div class="eyebrow">TRAVEL CURRENCY</div>
-    <h1>外匯計算機</h1>
-    <p class="subtitle">點選幣別輸入金額，輕鬆換算</p>
-  </header>
-
   <main class="display-area">
 
     <!-- 外幣金額與匯率 -->
     <section class="currency-row active" id="foreign-card">
       <div class="currency-heading">
         <div class="currency-left">
-          <div class="currency-tag" id="foreign-label">🇯🇵 JPY 日幣</div>
+          <div class="currency-tag" id="foreign-label">
+            🇯🇵 JPY 日幣
+          </div>
 
           <div class="rate-control">
             <span>匯率</span>
@@ -329,6 +318,7 @@ h1 {
             >
           </div>
         </div>
+
         <span class="hint">點擊輸入</span>
       </div>
 
@@ -347,7 +337,7 @@ h1 {
 
   </main>
 
-  <!-- 計算鍵盤 -->
+  <!-- 大型計算按鍵 -->
   <section class="keypad">
     <button class="btn" data-key="7">7</button>
     <button class="btn" data-key="8">8</button>
@@ -389,11 +379,13 @@ const twdAmount = document.getElementById("twd-amount");
 const rateInput = document.getElementById("rate");
 const twdHint = document.getElementById("twd-hint");
 
+/* 取得匯率 */
 function getRate() {
   const rate = Number(rateInput.value);
   return Number.isFinite(rate) && rate > 0 ? rate : 0;
 }
 
+/* 數字加上千分位 */
 function formatNumber(value) {
   if (!Number.isFinite(value)) return "0";
 
@@ -402,26 +394,26 @@ function formatNumber(value) {
   });
 }
 
-/* 依照數字長度調整字體 */
+/* 依數字長度調整字體 */
 function fitAmount(element, text) {
   element.textContent = text;
 
   element.classList.remove(
-    "long", "very-long", "extra-long"
+    "long",
+    "very-long",
+    "extra-long"
   );
 
-  const length = text.length;
-
-  if (length > 18) {
+  if (text.length > 18) {
     element.classList.add("extra-long");
-  } else if (length > 14) {
+  } else if (text.length > 14) {
     element.classList.add("very-long");
-  } else if (length > 10) {
+  } else if (text.length > 10) {
     element.classList.add("long");
   }
 }
 
-/* 安全檢查算式 */
+/* 計算四則運算 */
 function evaluateExpression(expression) {
   const normalized = expression
     .replace(/×/g, "*")
@@ -447,29 +439,33 @@ function getRawValue() {
   return result === null ? 0 : result;
 }
 
-/* 更新雙向換算 */
+/* 即時更新兩個金額 */
 function updateDisplay() {
   const value = getRawValue();
   const rate = getRate();
 
   if (inputMode === "foreign") {
     fitAmount(foreignAmount, currentInput);
+
     fitAmount(
       twdAmount,
       formatNumber(Math.round(value * rate))
     );
+
     twdHint.textContent = "換算結果";
   } else {
     fitAmount(twdAmount, currentInput);
+
     fitAmount(
       foreignAmount,
       formatNumber(rate > 0 ? value / rate : 0)
     );
+
     twdHint.textContent = "輸入中";
   }
 }
 
-/* 輸入數字與運算符號 */
+/* 數字輸入 */
 function appendInput(key) {
   const operators = ["+", "-", "×", "÷"];
 
@@ -502,7 +498,7 @@ function appendInput(key) {
   }
 
   if (operators.includes(key)) {
-    if (hasCalculated) hasCalculated = false;
+    hasCalculated = false;
 
     if (/[+\-×÷]$/.test(currentInput)) {
       currentInput = currentInput.slice(0, -1) + key;
@@ -514,7 +510,7 @@ function appendInput(key) {
   }
 }
 
-/* 按下等號 */
+/* 等號 */
 function calculateFinal() {
   const result = evaluateExpression(currentInput);
 
@@ -532,7 +528,7 @@ function clearAll() {
   updateDisplay();
 }
 
-/* 退格 */
+/* 刪除最後一個字元 */
 function backspace() {
   if (hasCalculated) {
     clearAll();
@@ -546,22 +542,24 @@ function backspace() {
   updateDisplay();
 }
 
-/* 切換輸入幣別 */
+/* 切換外幣或台幣輸入模式 */
 function setInputMode(mode) {
   inputMode = mode;
 
   foreignCard.classList.toggle(
-    "active", mode === "foreign"
+    "active",
+    mode === "foreign"
   );
 
   twdCard.classList.toggle(
-    "active", mode === "twd"
+    "active",
+    mode === "twd"
   );
 
   clearAll();
 }
 
-/* 切換日幣與人民幣 */
+/* 日幣與人民幣切換 */
 function switchCurrency() {
   currentCurrency = currentCurrency === "JPY" ? "CNY" : "JPY";
 
@@ -587,37 +585,26 @@ function switchCurrency() {
   clearAll();
 }
 
-/* 點擊外幣卡片切換輸入模式；
-   點擊幣別名稱區域可切換外幣種類 */
+/* 點幣別名稱切換日幣／人民幣 */
+foreignLabel.addEventListener("click", event => {
+  event.stopPropagation();
+  switchCurrency();
+  setInputMode("foreign");
+});
+
+/* 點外幣卡片其他位置輸入外幣 */
 foreignCard.addEventListener("click", event => {
   if (event.target === rateInput) return;
-
-  if (
-    event.target === foreignLabel &&
-    currentCurrency === "JPY"
-  ) {
-    switchCurrency();
-    setInputMode("foreign");
-    return;
-  }
-
-  if (
-    event.target === foreignLabel &&
-    currentCurrency === "CNY"
-  ) {
-    switchCurrency();
-    setInputMode("foreign");
-    return;
-  }
 
   setInputMode("foreign");
 });
 
+/* 點台幣卡片輸入台幣 */
 twdCard.addEventListener("click", () => {
   setInputMode("twd");
 });
 
-/* 鍵盤事件 */
+/* 數字按鍵 */
 document.querySelectorAll("[data-key]").forEach(button => {
   button.addEventListener("click", () => {
     appendInput(button.dataset.key);
@@ -625,15 +612,18 @@ document.querySelectorAll("[data-key]").forEach(button => {
 });
 
 document.getElementById("clear").addEventListener(
-  "click", clearAll
+  "click",
+  clearAll
 );
 
 document.getElementById("backspace").addEventListener(
-  "click", backspace
+  "click",
+  backspace
 );
 
 document.getElementById("equals").addEventListener(
-  "click", calculateFinal
+  "click",
+  calculateFinal
 );
 
 rateInput.addEventListener("input", updateDisplay);
@@ -660,6 +650,7 @@ document.addEventListener("keydown", event => {
   }
 });
 
+/* 初始畫面 */
 updateDisplay();
 </script>
 </body>
